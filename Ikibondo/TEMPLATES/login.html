@@ -1,0 +1,50 @@
+{%load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ikibondo-Login</title> 
+    <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.min.css' %}">
+</head>
+<body>
+    <div class="container-fluid d-flex justify-content-center w-100 bg-warning" style="min-height: 50px;">
+        <img
+        src="{% static 'img/ikibondo_logo-removebg-preview.png' %}"
+        alt="ikibondo logo"
+        class="p-1 m-auto img-fluid"
+        />
+    </div> 
+    <div class="container-fluid bg-light justify-content-center align-items-center pt-3 d-flex flex-column ">
+        <div class="display-6">
+            Sign in into your account
+        </div>
+    </div>
+    <div class="container-fluid bg-light">
+        <div class="d-flex justify-content-center align-items-center py-2">
+            <div class="m-auto d-flex flex-column align-items-middle p-4 bg-white shadow rounded">
+                <form action="{% url 'login'%}" method="post" class="mt-5">
+                    {% csrf_token %}
+                    <label for="label" class="text-center d-block mb-4">Good service in health care is act of saving life as well as giving life stay committed to word the end. you are most welcome!</label><br>
+                    <p class="h3 fw-bold text-danger">{{name.info}}</p>
+                    <div class="mb-3 w-100">
+                        <label for="phone" class="form-label">Phone Number:</label>
+                        <input type="text" name="phone_number" id="phone" class="form-control border-0 bg-light rounded">
+                    </div>
+                    <div class="mb-3 w-100">
+                        <label for="password" class="form-label">Account Password:</label>
+                        <input type="password" name="password" id="password" class="form-control border-0 bg-light rounded">
+                    </div>
+                    <p class="text-center mb-3"><a href="#">Forgot password?</a></p>
+                    <button type="submit" class="btn btn-warning p-2 w-100">Login</button>
+                    <p class="text-center mt-3">By clicking login, you accept user terms and policies.</p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <footer style="background-color: #D9D9D9;">
+            <p class="text-center m-auto">
+                &copy; 2024 Ikibondo</p>
+    </footer>   
+    <script src="{% static 'bootstrap-5.3.3-dist/js/bootstrap.bundle.js' %}"></script> 
+</body>
+</html>

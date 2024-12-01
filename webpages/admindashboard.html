@@ -1,0 +1,363 @@
+ <html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="bootstrap-5.3.3-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bootstrap-5.3.3-dist/css/bootstrap.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=family_restroom" />
+  <style>
+    #backcolor{
+    background-color: #FBBC04;  
+   }
+   .icon-design{
+            border-radius: 50%;
+            padding: 8px;
+            background-color: #D9D9D9;
+    }
+    .circle-graph {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: conic-gradient(
+        #C1C7CD 0% 70%,   
+        #697077 70% 100%  
+      );
+    }
+    .circle-grath::after{
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: conic-gradient(
+        #fff 0% 80%, 
+        #fff 80% 100%, 
+      );
+    }
+  </style>
+ </head>
+ <body>
+    <nav class="navbar bg-body-tertiary m-0 p-0">
+    <div class="container-fluid p-0 m-0">
+      <a class="navbar-brand p-0 m-o" href="#">
+        <img src="img/ikibondo_logo-removebg-preview.png" id="backcolor" alt="Logo" width="238.11" height="69" class="d-inline-block align-text-center me-lg-3">
+         <b>Admin Dashboard</b>
+      </a>
+    </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-2 col-md-3 d-none d-md-block vh-100 p-0 m-0 bg-white border-end bg-boby-tertiary">
+    <div class="my-2 d-flex ">
+      <div class="icon-design m-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+              <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+            </svg>
+      </div>
+      <div class="icon-design m-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+              <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
+              <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
+            </svg>
+      </div>
+      <div class="icon-design m-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+              <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
+            </svg>
+      </div>
+  </div>
+    <form class="container-fluid">
+      <div class="input-group">
+        <span class="input-group-text" id="basic-addon1"><button type="button" class="border-0 bg-light">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+          </svg>
+          </button>
+        </span>
+        <input type="text" class="form-control" placeholder=" Search" aria-label="Username" aria-describedby="basic-addon1">
+      </div>
+    </form>
+      <div class="p-2 shadow-sm bg-light">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
+          <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z"/>
+        </svg>
+        Overview</div>
+      <div class="p-2 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+          <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
+        </svg>
+        CHW</div>
+      <div class="p-2 shadow-sm">
+        <span class="material-symbols-outlined">
+          family_restroom
+        </span>
+        Parents & Baby</div>
+      <div class="p-2 shadow-sm">
+        
+        Vaccine & Measure</div>
+      <div class="p-2 shadow-sm">Reports</div>
+      <div class="p-2 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+          <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
+        </svg>
+        Notifications</div>
+      <div class="p-2 shadow-sm ">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+          <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z"/>
+        </svg>
+        Feedback</div>
+      <div class="p-2 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+          <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+        </svg>
+        Logout</div>
+    </div>
+      
+        <div class="col-lg-10 col-md-9 bg-light m-0">
+            <div class="row">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+              <div class="container-fluid">
+              <a class="navbar-brand d-lg-none " href="#">Admin Dashboard</a>
+              <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                <a class="nav-link active pt-3 text-black" aria-current="page" href="#">Overview</a>
+                <div> <a class="nav-link pt-3 text-black" href="#">CHW</a></div>
+                <div class="dropdown nav-link">
+                    <b class="btn btn-secondary dropdown-toggle border-0 bg-light text-black align-text-top" data-bs-toggle="dropdown" aria-expanded="false">
+                      Parents and babies
+                    </b>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Parents</a></li>
+                      <li><a class="dropdown-item" href="#">Babies</a></li>
+                    </ul>
+                  </div>
+                </a>
+                <div> <a class="nav-link pt-3 text-black" href="#">Reports</a></div>
+                <div> <a class="nav-link pt-3 text-black" href="#">Admins</a></div>
+                <div> <a class="nav-link pt-3 text-black" href="#">Feedback</a></div>
+                <div> <a class="nav-link pt-3 text-black" href="#">Logout</a></div>
+                </div>
+              </div>
+            </nav>
+            </div>
+            <div class="row px-2 hstack gap-2">
+              <div class="card col-md-2"> 
+                <div class="card-body">
+                  <h5 class="card-title">User Total</h5>
+                  <div class="hstack">
+                  <div class="card-link fs-5 h1">2k</div>
+                  <div class="card-link bg-light p-1 ms-auto">12%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card col-md-2">
+                <div class="card-body">
+                  <h5 class="card-title">Total Babies</h5>
+                  <div class="hstack">
+                  <div class="card-link fs-5 h1">2k</div>
+                  <div class="card-link bg-light p-1 ms-auto">12%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card col-md-2">
+                <div class="card-body">
+                  <h5 class="card-title h6">Total Test given</h5>
+                  <div class="hstack">
+                  <div class="card-link fs-5 h1">2k</div>
+                  <div class="card-link bg-light p-1 ms-auto">12%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card col-md-2">
+                <div class="card-body">
+                  <h5 class="card-title">Total Hospitals</h5>
+                  <div class="hstack">
+                  <div class="card-link fs-5 h1">2k</div>
+                  <div class="card-link bg-light p-1 ms-auto">12%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="gx-2 row gap-2 mt-3">
+              <div class="card col-md-4">
+                <div class="card-body">
+                  <h5 class="card-title"><b>Most Active Account Type</b></h5>
+                  <h6 class="card-subtitle mb-2 text-body-secondary">Very active Inactive</h6>
+                  <div class="circle-graph m-auto"></div>
+                </div>
+              </div>
+              <div class="card col-md-3">
+                <div class="card-body">
+                  <h5 class="card-title"><b>Service Delivery Rate</b></h5>
+                  <h6 class="card-subtitle mb-2 text-body-secondary">Very active  Inactive</h6>
+                  <div class="circle-graph m-auto"></div>
+                </div>
+              </div>
+              <div class="card col-md-4">
+                <div class="card-body">
+                  <h5 class="card-title"></h5>
+                  <h6 class="card-subtitle mb-2 text-body-secondary">Pie chart showing the overview of how babies life in red zone are in five districts of Rwanda </h6>
+                  <div class="circle-graph m-auto"></div>
+                </div>
+              </div>
+            </div>
+            <div class="row gx-2 gap-3 mt-2">
+              <div class="card col-md-6">
+                <div class="card-body">
+                <h5 class="card-title">Most active Comunity health worker</h5>
+                <table class="table table-success table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Fullnames</th>
+                      <th scope="col">Hospital</th>
+                      <th scope="col">Village</th>
+                      <th scope="col">Rate</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Felecie Muganga</td>
+                      <td>Gisovu post the centre</td>
+                      <td>Gisovu</td>
+                      <td>12</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Felecie Muganga</td>
+                      <td>Gisovu post the centre</td>
+                      <td>Gisovu</td>
+                      <td>12</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>Felecie Muganga</td>
+                      <td>Gisovu post the centre</td>
+                      <td>Gisovu</td>
+                      <td>12</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Felecie Muganga</td>
+                      <td>Gisovu post the centre</td>
+                      <td>Gisovu</td>
+                      <td>12</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Felecie Muganga</td>
+                      <td>Gisovu post the centre</td>
+                      <td>Gisovu</td>
+                      <td>12</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Felecie Muganga</td>
+                      <td>Gisovu post the centre</td>
+                      <td>Gisovu</td>
+                      <td>12</td>
+                    </tr>
+                  </tbody>
+                </table>
+                </div>
+              </div>
+              <div class="card col-md-5 p-0 m-0">
+                <div class="card-body">
+                <h5 class="card-title">Most active Comunity health worker</h5>
+                <table class="table table-success table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">Hospital Name</th>
+                      <th scope="col">Total Boby Born</th>
+                      <th scope="col">Boys</th>
+                      <th scope="col">Girls</th>
+                      <th scope="col">Rate</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">Gisovu post centre</th>
+                      <td>500</td>
+                      <td>100</td>
+                      <td>400</td>
+                      <td>12</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Gisovu post centre</th>
+                      <td>500</td>
+                      <td>100</td>
+                      <td>400</td>
+                      <td>12</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Gisovu post centre</th>
+                      <td>500</td>
+                      <td>100</td>
+                      <td>400</td>
+                      <td>12</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Gisovu post centre</th>
+                      <td>500</td>
+                      <td>100</td>
+                      <td>400</td>
+                      <td>12</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Gisovu post centre</th>
+                      <td>500</td>
+                      <td>100</td>
+                      <td>400</td>
+                      <td>12</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Gisovu post centre</th>
+                      <td>500</td>
+                      <td>100</td>
+                      <td>400</td>
+                      <td>12</td>
+                    </tr>
+                  </tbody>
+                </table>
+                </div>
+              </div>
+            </div>
+            <div class="row card gx-2 mt-2 p-2 mb-1">
+              <div class="card-title"><center><b>Test and  Device status in use</b></center></div>
+              <div class="card-body">
+                <table class="container-fluid table table-bordered border-black">
+                  <thead class="bg-light p-1">
+                    <th scope="col">Device Name</th>
+                    <th scope="col">Serial Number</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">User guide</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Status</th>
+                  </thead>
+                  <tr>
+                    <td scope="row">IOT 12
+                      <img src="" alt="" width="87" height="121">
+                    </td>
+                    <td>S12322342342</td>
+                    <td ><center>IOT Device is in charge of controlling and reporting the usage of the other devices deployed to give service to the other devices in case other device need communication it can be used to  link more than one device together to provide connectivity.</center></td>
+                    <td>User guide can be found on this link click here</td>
+                    <td>Location list can be found here on this link</td>
+                    <td>Active in  five minute later</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <footer style="background-color: #697077;" class="m-0 p-0">
+      <p align="center" class="m-0 p-0">&copy;2024 Ikibondo</p>
+    </footer>
+    <script src="bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
+ </body>
+ </html>

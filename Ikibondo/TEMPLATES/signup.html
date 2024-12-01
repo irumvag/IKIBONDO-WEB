@@ -1,0 +1,16 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ikibondo-sign_up</title>
+</head>
+<body>
+    <form action="{% url 'signup' %}" class="site-form" method="post">
+        {%  csrf_token %}
+        {{forms.as_p}}
+        <br>
+        <input type="submit" name="submit" value="Register now">
+    </form>
+</body>
+</html>
