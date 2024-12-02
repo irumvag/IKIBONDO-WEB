@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
-from .models import Feedback,Myuser
+from .models import *
 from .forms import CustomUserCreationForm,CHWCreationForm,Addlocation
 from django.contrib.sessions.models import Session
 
@@ -14,7 +14,7 @@ def signup(request):
         if forms.is_valid():
             forms.save()
             #log the user in
-            return redirect('login/')
+            return redirect('login')
     else:
         form=CustomUserCreationForm()
     return render(request,'signup.html',{'forms':form})
@@ -56,18 +56,31 @@ def logout_view(request):
         Session.objects.filter(session_key=request.session.session_key).delete()
         logout(request)
         return redirect('login')
-        
+
+sum1,sum2,sum3,sum4=0,0,0,0
+for h in  Baby.objects.all():
+    sum2+=1
+for g in Myuser.objects.all():
+    sum1+=1
+for g in VaccinatedBaby.objects.all():
+    sum3+=1
+for g in Hospital.objects.all():
+    sum4+=1
+total={
+    'totaluser':sum1,
+    'totalbabies':sum2,
+    'totaltests':sum3,
+    'totalhospital':sum4,
+}
 @login_required(login_url='/login/')
 def useradmin(request):
     user=request.user
-    myuser=Myuser.objects.all()
-    return render(request,'admindashboard.html',{'user':user,'myuser':myuser})
+    return render(request,'admindashboard.html',{'user':user,'totals':total})
 
 @login_required(login_url='/login/')
 def adminfeedback(request):
-    myuser=Myuser.objects.all()
     user=request.user
-    return render(request,'adminfeedback.html',{'user':user,'myuser':myuser})
+    return render(request,'adminfeedback.html',{'user':user,'totals':total})
 @login_required
 def chw(request):
     user=request.user
