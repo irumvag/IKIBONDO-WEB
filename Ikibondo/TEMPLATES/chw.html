@@ -250,6 +250,40 @@
                         <th scope="col">Edit</th>
                         <th scope="col">Deactivate</th>
                     </thead>
+                    <tbody id="userTableBody">
+                      {% for user in chw %}
+                      <tr>
+                        <td><input type="checkbox" class="userCheckbox" /></td>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.phone }}</td>
+                        <td>{{ user.sex }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>
+                          <span class="badge bg-success">Active</span>
+                        </td>
+                        <td>
+                          <button
+                            class="btn btn-sm btn-warning editButton"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editUserModal"
+                          >
+                            <i class="bi bi-pencil"></i>
+                          </button>
+                          <button class="btn btn-sm btn-danger deleteButton">
+                            <i class="bi bi-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      {% empty %}
+                      <tr>
+                        <td colspan="10" class="text-center">No users found</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
                  </table>
              </div>
             </div>

@@ -57,7 +57,7 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
-sum1,sum2,sum3,sum4=0,0,0,0
+sum1,sum2,sum3,sum4,sum5=0,0,0,0,0
 for h in  Baby.objects.all():
     sum2+=1
 for g in Myuser.objects.all():
@@ -66,11 +66,14 @@ for g in VaccinatedBaby.objects.all():
     sum3+=1
 for g in Hospital.objects.all():
     sum4+=1
+for k in CHW.objects.all():
+    sum5+=1
 total={
     'totaluser':sum1,
     'totalbabies':sum2,
     'totaltests':sum3,
     'totalhospital':sum4,
+    'totalchw':sum5,
 }
 @login_required(login_url='/login/')
 def useradmin(request):
@@ -85,7 +88,7 @@ def adminfeedback(request):
 def chw(request):
     user=request.user
     myuser=Myuser.objects.all()
-    render(request,'chw.html')
+    render(request,'chw.html',{'user':user,'chw':CHW.objects.all(),'totals':total})
     
 @login_required(login_url='/login/')
 def addchw(request):

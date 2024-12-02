@@ -14,7 +14,7 @@ class CustomUserCreationForm(UserCreationForm):
 class CHWCreationForm(forms.ModelForm):
     class Meta:
         model=CHW
-        fields=['NID','HID']
+        fields=['LocationId','HID']
 class Addlocation(forms.ModelForm):
     class Meta:
         model=Location

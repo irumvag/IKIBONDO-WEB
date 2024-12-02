@@ -57,6 +57,7 @@ class Parent(models.Model):
     Gender= models.TextChoices("Male","Female")
     Age= models.PositiveIntegerField()
     Phone= models.CharField(max_length=10)
+    Role=models.CharField(max_length=50,choices=[('Admin','Admin'),('Parent','Parent'),('CHW','CHW')])
     Location=models.ForeignKey(Location,blank=False,on_delete=models.CASCADE)
     def __str__(self):
         return self.Fullnames
@@ -75,9 +76,8 @@ class Hospital(models.Model):
 #checked True
 class CHW(models.Model):
     User=models.OneToOneField(Myuser,on_delete=models.CASCADE,related_name='chw_profile')
-    NID= models.PositiveBigIntegerField(primary_key=True)
-    LocationId=models.ForeignKey(Location, on_delete=models.CASCADE, related_name='CHW')
-    HID= models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='CHW')
+    LocationId=models.ForeignKey(Location, on_delete=models.CASCADE, related_name='chw_profile')
+    HID= models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='chw_profile')
     def __str__(self):
         return self.User.first_name
     
@@ -116,9 +116,9 @@ class Medical_info(models.Model):
 #checked out
 class Baby(models.Model):
     BID= models.PositiveBigIntegerField(primary_key=True)
-    PID= models.ForeignKey(CHW,on_delete=models.CASCADE,related_name='Baby')
+    PID= models.ForeignKey(Parent,on_delete=models.CASCADE,related_name='Baby')
     Names= models.CharField(max_length=100)
-    Gender= models.TextChoices("Male","Female")
+    Gender= models.CharField(max_length=30,choices=[('Male','Male'),('Female','Female')])
     Age= models.PositiveIntegerField()
     Photo= models.ImageField(default='default.png',blank=True)
     def __str__(self):
@@ -126,7 +126,7 @@ class Baby(models.Model):
     class Meta:
         verbose_name_plural = "Babies"
     
-#checked true
+# #checked true
 class Feedback(models.Model):
     FUll_Name=models.CharField(max_length=100)
     Email= models.EmailField()
@@ -137,9 +137,9 @@ class Feedback(models.Model):
         return self.Subject
     class Meta:
         verbose_name_plural='Feedbacks'
-#checked out
+# #checked out
 class Update(models.Model):
-    BID=models.ForeignKey(Baby, on_delete=models.CASCADE, related_name='Update')
+    BID=models.ForeignKey('Baby', on_delete=models.CASCADE, related_name='Update')
     VID=models.ForeignKey(Vacinne_and_measure,on_delete=models.CASCADE,related_name='Update')
     New_height= models.PositiveBigIntegerField()
     New_weight= models.PositiveBigIntegerField()
@@ -163,4 +163,4 @@ class VaccinatedBaby(models.Model):
 
 
 
-# Create your models here.
+# # Create your models here.
