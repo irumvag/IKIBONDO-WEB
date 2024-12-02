@@ -6,6 +6,13 @@
     <title>Ikibondo-sign_up</title>
 </head>
 <body>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
     <form action="{% url 'signup' %}" class="site-form" method="post">
         {%  csrf_token %}
         {{forms.as_p}}

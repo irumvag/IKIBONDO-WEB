@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser,BaseUserManager,PermissionsMixin
+from django.core.validators import RegexValidator
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, phone_number, password=None, **extra_fields):
@@ -21,7 +22,14 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(phone_number, password, **extra_fields)
 class Myuser(AbstractUser):
     username=None
-    phone_number=models.CharField(max_length=10,unique=True)
+    phone_number=models.CharField(max_length=10,validators=[
+            RegexValidator(
+                regex=r'^\d{10}$',
+                message="Phone number must be 10 digits long.",
+                code='invalid_phone_number'
+            )
+            ],
+        unique=True)
     email=models.EmailField(unique=True,blank=True)
     USERNAME_FIELD='phone_number'
     REQUIRED_FIELDS=['email']
@@ -36,7 +44,7 @@ class Location(models.Model):
     Provence= models.CharField(max_length=100)
     District= models.CharField(max_length=100)
     Village= models.CharField(max_length=100)
-    Streetcode=models.CharField(max_length=50)
+    Streetcode=models.CharField(max_length=50,blank=True)
 
     def __str__(self):
         return  self.District

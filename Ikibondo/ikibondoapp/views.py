@@ -8,12 +8,10 @@ from .forms import CustomUserCreationForm,CHWCreationForm,Addlocation
 from django.contrib.sessions.models import Session
 
 def signup(request):
-    form=CustomUserCreationForm()
     if request.method=='POST':
         forms=CustomUserCreationForm(request.POST)
         if forms.is_valid():
             forms.save()
-            #log the user in
             return redirect('login')
     else:
         form=CustomUserCreationForm()
@@ -56,6 +54,8 @@ def logout_view(request):
         Session.objects.filter(session_key=request.session.session_key).delete()
         logout(request)
         return redirect('login')
+    logout(request)
+    return redirect('login')
 
 sum1,sum2,sum3,sum4=0,0,0,0
 for h in  Baby.objects.all():
@@ -99,9 +99,8 @@ def addchw(request):
         form3=Addlocation()
     return render(request,'addchw.htm',{'form1':form1,'form2':form2,'form3':form3})
 
-@login_required
-def chw(request):
+@login_required(login_url='/login/')
+def chw_view(request):
     user=request.user
-    myuser=Myuser.objects.all()
-    render(request,'chw.html')
+    return render(request,'chw.html',{'user':user,'totals':total})
 

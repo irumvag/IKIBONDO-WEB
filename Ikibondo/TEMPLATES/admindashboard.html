@@ -5,8 +5,11 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Admin Dashboard</title>
    <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.min.css' %}">
+   <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
    <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.css' %}">
-   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=family_restroom" />
    <style>
      #backcolor{
      background-color: #FBBC04;  
@@ -40,7 +43,7 @@
   <body>
      <nav class="navbar bg-body-tertiary m-0 p-0">
      <div class="container-fluid p-0 m-0">
-       <a class="navbar-brand p-0 m-o" href="{% url '' %}">
+       <a class="navbar-brand p-0 m-o" href="{% url 'useradmin' %}">
          <img src="{% static 'img/ikibondo_logo-removebg-preview.png' %}" id="backcolor" alt="Logo" width="238.11" height="69" class="d-inline-block align-text-center me-lg-3">
           <b>Admin Dashboard</b>
        </a>
@@ -87,16 +90,13 @@
          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
            <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
          </svg>
-         CHW</div>
-       <div class="p-2 shadow-sm">
-         <span class="material-symbols-outlined">
-           family_restroom
-         </span>
+         <a href="{% url 'chw'%}" style="text-decoration: none;color:#000">CHW</a>
+        </div>
+       <div class="p-2 shadow-sm fw-bold">
          Parents & Baby</div>
-       <div class="p-2 shadow-sm">
-         
+       <div class="p-2 shadow-sm fw-bold">
          Vaccine & Measure</div>
-       <div class="p-2 shadow-sm">Reports</div>
+       <div class="p-2 shadow-sm ">Reports</div>
        <div class="p-2 shadow-sm">
          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
@@ -129,22 +129,22 @@
                </button>
                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                <div class="navbar-nav">
-                 <a class="nav-link active pt-3 text-black" aria-current="page" href="#">Overview</a>
-                 <div> <a class="nav-link pt-3 text-black" href="#">CHW</a></div>
+                 <a class="nav-link active pt-3 fw-bold" aria-current="page" href="#" style="color: #001D6C;">Overview</a>
+                 <div> <a class="nav-link pt-3" style="color: #001D6C;" href="{% url 'chw'%}">CHW</a></div>
                  <div class="dropdown nav-link">
-                     <b class="btn btn-secondary dropdown-toggle border-0 bg-light text-black align-text-top" data-bs-toggle="dropdown" aria-expanded="false">
+                     <b class="btn btn-secondary dropdown-toggle border-0 bg-light  align-text-top" style="color: #001D6C;" data-bs-toggle="dropdown" aria-expanded="false">
                        Parents and babies
                      </b>
                      <ul class="dropdown-menu">
-                       <li><a class="dropdown-item" href="#">Parents</a></li>
-                       <li><a class="dropdown-item" href="#">Babies</a></li>
+                       <li><a class="dropdown-item" style="color: #001D6C;" href="#">Parents</a></li>
+                       <li><a class="dropdown-item" style="color: #001D6C;" href="#">Babies</a></li>
                      </ul>
                    </div>
                  </a>
-                 <div> <a class="nav-link pt-3 text-black" href="#">Reports</a></div>
-                 <div> <a class="nav-link pt-3 text-black" href="#">Admins</a></div>
-                 <div> <a class="nav-link pt-3 text-black" href="{% url 'adminfeedback'%}">Feedback</a></div>
-                 <div> <a class="nav-link pt-3 text-black" href="{% url 'logout' %}">Logout</a></div>
+                 <div> <a class="nav-link pt-3" style="color: #001D6C;" href="#">Reports</a></div>
+                 <div> <a class="nav-link pt-3" style="color: #001D6C;" href="#">Admins</a></div>
+                 <div> <a class="nav-link pt-3" style="color: #001D6C;" href="{% url 'adminfeedback'%}">Feedback</a></div>
+                 <div> <a class="nav-link pt-3" style="color: #001D6C;" href="{% url 'logout' %}">Logout</a></div>
                  </div>
                </div>
              </nav>
@@ -336,7 +336,7 @@
              </div>
              <div class="row card gx-2 mt-2 p-2 mb-1">
                <div class="card-title"><center><b>Test and  Device status in use</b></center></div>
-               <div class="card-body">
+               <div class="card-body table-responsive">
                  <table class="container-fluid table table-bordered border-black ">
                    <thead class="bg-light p-1">
                      <th scope="col">Device Name</th>
