@@ -31,6 +31,7 @@ class Myuser(AbstractUser):
             ],
         unique=True)
     email=models.EmailField(unique=True,blank=True)
+    role=models.CharField(choices=[('nurse','nurse'),('superadmin','superadmin'),('chw','chw'),('parent','parent')],max_length=50)
     USERNAME_FIELD='phone_number'
     REQUIRED_FIELDS=['email']
     object=CustomUserManager()
@@ -75,7 +76,7 @@ class Hospital(models.Model):
 
 #checked True
 class CHW(models.Model):
-    User=models.OneToOneField(Myuser,on_delete=models.CASCADE,related_name='chw_profile')
+    User=models.OneToOneField(Myuser,on_delete=models.CASCADE)
     LocationId=models.ForeignKey(Location, on_delete=models.CASCADE, related_name='chw_profile')
     HID= models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='chw_profile')
     def __str__(self):
@@ -126,7 +127,7 @@ class Baby(models.Model):
     class Meta:
         verbose_name_plural = "Babies"
     
-# #checked true
+#checked true
 class Feedback(models.Model):
     FUll_Name=models.CharField(max_length=100)
     Email= models.EmailField()
@@ -137,7 +138,7 @@ class Feedback(models.Model):
         return self.Subject
     class Meta:
         verbose_name_plural='Feedbacks'
-# #checked out
+#checked out
 class Update(models.Model):
     BID=models.ForeignKey('Baby', on_delete=models.CASCADE, related_name='Update')
     VID=models.ForeignKey(Vacinne_and_measure,on_delete=models.CASCADE,related_name='Update')
@@ -149,7 +150,7 @@ class Update(models.Model):
         return self.VID
     class Meta:
         verbose_name_plural='Updates'
-#ced outheck
+#checked outheck
 class VaccinatedBaby(models.Model):
     BID= models.ForeignKey(Baby, on_delete=models.CASCADE, related_name='Gives')
     VID=models.ForeignKey(Vacinne_and_measure,on_delete=models.CASCADE,related_name='VaccinatedBabies')

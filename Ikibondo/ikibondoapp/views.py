@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from .models import *
-from .forms import CustomUserCreationForm,CHWCreationForm,Addlocation
+from .forms import *
 from django.contrib.sessions.models import Session
 
 def signup(request):
@@ -32,7 +32,7 @@ def contactus(request):
             return HttpResponse("All fields are required!", status=400)
         contact=Feedback(FUll_Name=fullname,Email=email,Subject=subject,Message=message)
         contact.save()
-        info={'name':"Thank you for sending message!!"}
+        info={'name':"Thank you for sending us message!!"}
         return render(request,'contactus.html',{'info':info})
     return render(request,'contactus.html')
 
@@ -58,8 +58,6 @@ def logout_view(request):
     return redirect('login')
 
 sum1,sum2,sum3,sum4,sum5=0,0,0,0,0
-for h in  Baby.objects.all():
-    sum2+=1
 for g in Myuser.objects.all():
     sum1+=1
 for g in VaccinatedBaby.objects.all():
