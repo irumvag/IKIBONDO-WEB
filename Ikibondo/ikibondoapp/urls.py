@@ -12,6 +12,8 @@ urlpatterns=[
     path('logout',logout_view,name='logout'),
     path('adminfeedback',adminfeedback,name='adminfeedback'),
     path('chw',chw_view,name='chw'),
+    path('addchw',addchw,name='addchw'),
+    path('change_password',change_password,name='change_password'),
 ]
 
 urlpatterns+= staticfiles_urlpatterns()

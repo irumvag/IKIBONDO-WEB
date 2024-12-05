@@ -21,6 +21,17 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
         return self.create_user(phone_number, password, **extra_fields)
 class Myuser(AbstractUser):
+    ROLE_CHOICES = [
+        ('Nurse', 'Nurse'),
+        ('Superadmin', 'Superadmin'),
+        ('Chw', 'Chw'),
+        ('Parent', 'Parent'),
+    ]
+
+    GENDER_CHOICES = [
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+    ]
     username=None
     phone_number=models.CharField(max_length=10,validators=[
             RegexValidator(
@@ -36,6 +47,7 @@ class Myuser(AbstractUser):
     Age= models.PositiveIntegerField()
     USERNAME_FIELD='phone_number'
     REQUIRED_FIELDS=['email']
+    need_password_change=models.BooleanField(default=True)
     object=CustomUserManager()
     def __str__(self):
         return self.phone_number

@@ -247,6 +247,7 @@
                         <th scope="col">Village</th>
                         <th scope="col">Role</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Gender</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Deactivate</th>
                     </thead>
@@ -256,15 +257,17 @@
                         <td><input type="checkbox" class="userCheckbox" /></td>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ chw.nid }}</td>
-                        <td>{{ user.first_name }} {{ user.last_name }}</td>
-                        <td>{{ user.phone }}</td>
-                        <td>{{ user.role }}</td>
-                        <td>{{ user.is_staff }}</td>
-                        <td>{{ chw.sex }}</td>
-                        <td>{{ user.role }}</td>
-                        <td>
+                        <td>{{ user.user.first_name }} {{ user.user.last_name }}</td>
+                        <td>{{ user.user.phone }}</td>
+                        <td>{% if chw.locationid == loc.locationid %}
+                            {{loc.village}}
+                            {%endif%}
+                        </td>
+                        <td>{{ user.user.role }}</td>
+                        <td>{{ user.is_staff }}
                           <span class="badge bg-success">Active</span>
                         </td>
+                        <td>{{ chw.gender }}</td>
                         <td>
                           <button
                             class="btn btn-sm btn-warning editButton"

@@ -37,8 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'ikibondoapp',
 ]
+AUTH_USER_MODEL='ikibondoapp.Myuser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -129,9 +132,9 @@ MEDIA_ROOT=(
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL='ikibondoapp.Myuser'
 LOGIN_REDIRECT_URL='/useradmin/'
 LOGOUT_REDIRECT_URL='/'
 AUTHENTICATION_BACKENDS=[
     'django.contrib.auth.backends.ModelBackend',
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap5'

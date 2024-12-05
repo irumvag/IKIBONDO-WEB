@@ -6,6 +6,9 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 from django.contrib.sessions.models import Session
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+
 
 def signup(request):
     if request.method=='POST':
@@ -43,6 +46,9 @@ def login_view(request):
         user=authenticate(request,username=phone_number,password=password)
         if user is not None:
             login(request, user)
+            if user.needs_password_change:
+                # Redirect to a password change page
+                return redirect('change_password') 
             return redirect('useradmin')
         else:
             return render(request,'login.html',{'name':{'info':"Invalid phone number or password"}})
@@ -85,23 +91,47 @@ def adminfeedback(request):
 @login_required
 def chw(request):
     user=request.user
-    myuser=Myuser.objects.all()
-    render(request,'chw.html',{'user':user,'chw':CHW.objects.all(),'totals':total})
+    myuser=Myuser.objects.get(role='Chw')
+    render(request,'chw.html',{'user':user,'chw':CHW.objects.all(),'totals':total,'loc':Location.objects.all()})
     
 @login_required(login_url='/login/')
 def addchw(request):
-    user=request.user
-    myuser=Myuser.objects.all()
-    if request.method =='POST':
-        pass
+    if request.method == 'POST':
+        form1 = CustomUserCreationForm(request.POST)
+        form3 = CHWCreationForm(request.POST)
+        if form1.is_valid() and form3.is_valid():
+            # Save the custom user first
+            user = form1.save()
+
+            # Save the CHW record (with the user assigned)
+            chw = form3.save(commit=False)
+            chw.User = user  # Associate the user with this CHW
+            chw.save()
+
+            return redirect('chw')  # Redirect after successful submission
     else:
-        form1=CustomUserCreationForm()
-        form2=Addlocation()
-        form3=Addlocation()
-    return render(request,'addchw.htm',{'form1':form1,'form2':form2,'form3':form3})
+        form1 = CustomUserCreationForm()
+        form3 = CHWCreationForm()
+
+    return render(request, 'addchw.html', {'form1': form1, 'form3': form3})
 
 @login_required(login_url='/login/')
 def chw_view(request):
     user=request.user
     return render(request,'chw.html',{'user':user,'totals':total})
 
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            # Update the user's session to reflect the new password
+            update_session_auth_hash(request, form.user)
+            # Mark that the user no longer needs to change their password
+            request.user.needs_password_change = False
+            request.user.save()
+            messages.success(request, 'Your password has been changed successfully.')
+            return redirect('useradmin')  # Redirect to home or desired page
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'change_password.html', {'form': form})
