@@ -5,7 +5,7 @@ from django import forms
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model=Myuser
-        fields=['phone_number','email','first_name', 'last_name','role','password1','password2']
+        fields=['phone_number','email','first_name', 'last_name','role','gender','password1','password2']
         def clean_phone_number(self):
             phone_number = self.cleaned_data.get('phone_number')
             if not phone_number.isdigit() or len(phone_number) != 10:

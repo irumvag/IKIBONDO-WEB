@@ -255,12 +255,12 @@
                       <tr>
                         <td><input type="checkbox" class="userCheckbox" /></td>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ user.first_name }}</td>
-                        <td>{{ user.last_name }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.username }}</td>
+                        <td>{{ chw.nid }}</td>
+                        <td>{{ user.first_name }} {{ user.last_name }}</td>
                         <td>{{ user.phone }}</td>
-                        <td>{{ user.sex }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>{{ user.is_staff }}</td>
+                        <td>{{ chw.sex }}</td>
                         <td>{{ user.role }}</td>
                         <td>
                           <span class="badge bg-success">Active</span>

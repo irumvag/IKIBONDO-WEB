@@ -31,14 +31,16 @@ class Myuser(AbstractUser):
             ],
         unique=True)
     email=models.EmailField(unique=True,blank=True)
-    role=models.CharField(choices=[('nurse','nurse'),('superadmin','superadmin'),('chw','chw'),('parent','parent')],max_length=50)
+    role=models.CharField(choices=[('Nurse','Nurse'),('Superadmin','Superadmin'),('Chw','Chw'),('Parent','Parent')],max_length=50)
+    gender= models.CharField(choices=[('Male','Male'),('Female','Female')],max_length=20)
+    Age= models.PositiveIntegerField()
     USERNAME_FIELD='phone_number'
     REQUIRED_FIELDS=['email']
     object=CustomUserManager()
     def __str__(self):
         return self.phone_number
 
-#checked True
+# #checked True
 class Location(models.Model):
     LocationId= models.PositiveIntegerField(primary_key=True)
     Country = models.CharField(max_length=100, default='Rwanda', blank=True)
@@ -55,17 +57,13 @@ class Location(models.Model):
 class Parent(models.Model):
     user=models.OneToOneField(Myuser,on_delete=models.CASCADE,related_name='parent_profile')
     NID= models.PositiveIntegerField(primary_key=True)
-    Gender= models.TextChoices("Male","Female")
-    Age= models.PositiveIntegerField()
-    Phone= models.CharField(max_length=10)
-    Role=models.CharField(max_length=50,choices=[('Admin','Admin'),('Parent','Parent'),('CHW','CHW')])
     Location=models.ForeignKey(Location,blank=False,on_delete=models.CASCADE)
     def __str__(self):
         return self.Fullnames
     class Meta:
         verbose_name_plural='Parents'
 
-#checked True
+# #checked True
 class Hospital(models.Model):
     HID= models.PositiveBigIntegerField(primary_key=True)
     LocationId=models.ForeignKey(Location, on_delete=models.CASCADE,related_name='Hospital')
@@ -100,7 +98,20 @@ class Vacinne_and_measure(models.Model):
     Time_to_inject=models.PositiveIntegerField()
     def __str(self):
         return self.Vacinne_name
-    
+
+ #checked out
+class Baby(models.Model):
+    BID= models.PositiveBigIntegerField(primary_key=True)
+    PID= models.ForeignKey(Parent,on_delete=models.CASCADE,related_name='Baby')
+    Names= models.CharField(max_length=100)
+    Gender= models.CharField(max_length=30,choices=[('Male','Male'),('Female','Female')])
+    Age= models.PositiveIntegerField()
+    Photo= models.ImageField(default='default.png',blank=True)
+    def __str__(self):
+        return self.Names
+    class Meta:
+        verbose_name_plural = "Babies"
+
 #checked out
 class Medical_info(models.Model):
     HID= models.PositiveBigIntegerField()
@@ -114,18 +125,6 @@ class Medical_info(models.Model):
         return self.Midwife_name
     class Meta:
         verbose_name_plural = "Medical Infos"
-#checked out
-class Baby(models.Model):
-    BID= models.PositiveBigIntegerField(primary_key=True)
-    PID= models.ForeignKey(Parent,on_delete=models.CASCADE,related_name='Baby')
-    Names= models.CharField(max_length=100)
-    Gender= models.CharField(max_length=30,choices=[('Male','Male'),('Female','Female')])
-    Age= models.PositiveIntegerField()
-    Photo= models.ImageField(default='default.png',blank=True)
-    def __str__(self):
-        return self.Names
-    class Meta:
-        verbose_name_plural = "Babies"
     
 #checked true
 class Feedback(models.Model):
@@ -150,7 +149,7 @@ class Update(models.Model):
         return self.VID
     class Meta:
         verbose_name_plural='Updates'
-#checked outheck
+#checked out
 class VaccinatedBaby(models.Model):
     BID= models.ForeignKey(Baby, on_delete=models.CASCADE, related_name='Gives')
     VID=models.ForeignKey(Vacinne_and_measure,on_delete=models.CASCADE,related_name='VaccinatedBabies')
@@ -164,4 +163,4 @@ class VaccinatedBaby(models.Model):
 
 
 
-# # Create your models here.
+# Create your models here.
