@@ -44,10 +44,11 @@ class Myuser(AbstractUser):
     email=models.EmailField(unique=True,blank=True)
     role=models.CharField(choices=[('Nurse','Nurse'),('Superadmin','Superadmin'),('Chw','Chw'),('Parent','Parent')],max_length=50)
     gender= models.CharField(choices=[('Male','Male'),('Female','Female')],max_length=20)
-    Age= models.PositiveIntegerField()
+    Age= models.PositiveIntegerField(null=True)
+    need_password_change=models.BooleanField(default=True)
     USERNAME_FIELD='phone_number'
     REQUIRED_FIELDS=['email']
-    need_password_change=models.BooleanField(default=True)
+    
     object=CustomUserManager()
     def __str__(self):
         return self.phone_number
@@ -91,7 +92,8 @@ class CHW(models.Model):
     HID= models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='chw_profile')
     def __str__(self):
         return self.User.first_name
-    
+    def __str__(self):
+        return f"{self.User.first_name} {self.User.last_name} ({self.HID})"
 #checked True
 class Device(models.Model):
     Name= models.CharField(max_length=100)

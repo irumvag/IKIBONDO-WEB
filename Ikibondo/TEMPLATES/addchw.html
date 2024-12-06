@@ -212,17 +212,29 @@
              <div class="container pt-5 mt-4 card">
                 <h1 class="text-center">Add CHW</h1>
                 <div class="row  card-body justify-content-center">
+                  {%if messages%}
+                  <div class="alert alert-info">{{messages}}</div>
+                  {%endif%}
                     <div class="col-md-8">
-                        <form action="{% url 'chw' %}" method="post" class="needs-validation" novalidate>
+                        <form action="{% url 'addchw' %}" method="post">
                             {% csrf_token %}
                             <div class="mb-4">
                                 <h4>User Information</h4>
-                                {{ form1|crispy }}
+                                <label for="phone_number" class="p-2"> Phone number:</label>
+                                {{form1.phone_number}}
+                                <label for="first_name" class="p-2">First name:</label>
+                                {{form1.first_name}}
+                                <label for="last_name" class="p-2">Last name:</label>
+                                {{form1.last_name}}
+                                <label for="gender" class="p-2">Gender:</label>
+                                {{form1.gender}}
+                                <label for="age" class="p-2">Age:</label>
+                                {{form1.Age}}
                             </div>        
-                            <div class="mb-4">
+                            <!-- <div class="mb-4">
                                 <h4>CHW Information</h4>
                                 {{ form3|crispy }}
-                            </div>
+                            </div> -->
                             <button type="submit" class="btn btn-primary btn-block">Submit</button>
                         </form>
                     </div>

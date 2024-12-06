@@ -5,16 +5,29 @@ from .models import *
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = Myuser
-        fields = ['phone_number', 'email', 'first_name', 'last_name','gender', 'Age', 'password1', 'password2']
-
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        # Set a default password
-        if not user.password:
-            user.set_password('umwana123')  # Set a default password here
-        if commit:
-            user.save()
-        return user
+        fields = ['phone_number', 'email', 'first_name', 'last_name','gender', 'Age']
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     # Remove password fields
+    #     self.fields.pop('password1', None)
+    #     self.fields.pop('password2', None)
+    # def clean_password1(self):
+    #     pass
+    # def clean_password2(self):
+    #     pass
+    # def save(self, commit=True):
+    #     user = super().save(commit=False)
+    #     # Set a default password
+    #     if not user.password:
+    #         user.set_password('umwana123')  # Set a default password here
+    #     if commit:
+    #         user.save()
+    #     return user
+    # def clean(self):
+    #     # Skip password validation as it's not needed
+    #     cleaned_data = super().clean()
+    #     return cleaned_data
+    
 
     phone_number = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter phone number'}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter email'}))
@@ -37,8 +50,16 @@ class CHWCreationForm(forms.ModelForm):
         model = CHW
         fields = ['LocationId', 'HID']
 
-    LocationId = forms.ModelChoiceField(queryset=Location.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
-    HID = forms.ModelChoiceField(queryset=Hospital.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
+    LocationId = forms.ModelChoiceField(
+        queryset=Location.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label="Location"
+    )
+    HID = forms.ModelChoiceField(
+        queryset=Hospital.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label="Hospital"
+    )
 
 class Addlocation(forms.ModelForm):
     class Meta:
