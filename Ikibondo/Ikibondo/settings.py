@@ -145,4 +145,4 @@ EMAIL_HOST = 'smtp.gmail.com'  # Gmail's SMTP server
 EMAIL_PORT = 587  # Port for TLS
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'djanaclet@gmail.com'  # Your Gmail address
-EMAIL_HOST_PASSWORD ='pily zqke qnme pfvv'  # Your Gmail app password
+EMAIL_HOST_PASSWORD =''  # Your Gmail app password

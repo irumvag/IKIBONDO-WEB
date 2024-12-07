@@ -131,7 +131,7 @@ def admin_view(request):
 @login_required
 def babies(request):
     return render(request,'babies.html') 
-@login_required(login_url='/login/')
+@login_required
 def addchw(request):
     if request.method == 'POST':
         form1 = CustomUserCreationForm(request.POST)
