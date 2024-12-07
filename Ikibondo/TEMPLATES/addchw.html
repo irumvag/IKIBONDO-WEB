@@ -39,6 +39,25 @@
          #fff 80% 100%, 
        );
      }
+     .circle-graph1 {
+       width: 150px;
+       height: 150px;
+       border-radius: 50%;
+       background: conic-gradient(
+         #0c4c26 0% 70%,   
+         #2480dc 70% 100%  
+       );
+     }
+     .circle-grath1::after{
+       position: absolute;
+       width: 10px;
+       height: 10px;
+       border-radius: 50%;
+       background: conic-gradient(
+         #fff 0% 80%, 
+         #fff 80% 100%, 
+       );
+     }
    </style>
   </head>
   <body>
@@ -198,7 +217,7 @@
                  <div class="card-body">
                    <h5 class="card-title"><b>Service Delivery Rate</b></h5>
                    <h6 class="card-subtitle mb-2 text-body-secondary">Very active  Inactive</h6>
-                   <div class="circle-graph m-auto"></div>
+                   <div class="circle-graph1 m-auto"></div>
                  </div>
                </div>
                <div class="card col-md-4">
@@ -219,22 +238,9 @@
                         <form action="{% url 'addchw' %}" method="post">
                             {% csrf_token %}
                             <div class="mb-4">
-                                <h4>User Information</h4>
-                                <label for="phone_number" class="p-2"> Phone number:</label>
-                                {{form1.phone_number}}
-                                <label for="first_name" class="p-2">First name:</label>
-                                {{form1.first_name}}
-                                <label for="last_name" class="p-2">Last name:</label>
-                                {{form1.last_name}}
-                                <label for="gender" class="p-2">Gender:</label>
-                                {{form1.gender}}
-                                <label for="age" class="p-2">Age:</label>
-                                {{form1.Age}}
+                               {{form1|crispy}} 
                             </div>        
-                            <!-- <div class="mb-4">
-                                <h4>CHW Information</h4>
-                                {{ form3|crispy }}
-                            </div> -->
+                           
                             <button type="submit" class="btn btn-primary btn-block">Submit</button>
                         </form>
                     </div>

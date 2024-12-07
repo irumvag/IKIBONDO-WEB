@@ -9,6 +9,7 @@ from django.contrib.sessions.models import Session
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from time import sleep
+from django.core.mail import send_mail
 
 def signup(request):
     if request.method=='POST':
@@ -101,58 +102,59 @@ def useradmin(request):
 def adminfeedback(request):
     user=request.user
     return render(request,'adminfeedback.html',{'user':user,'totals':total})
-@login_required
+@login_required(login_url='/login/')
 def chw(request):
     user=request.user
-    myuser=Myuser.objects.get(role='Chw')
-    render(request,'chw.html',{'user':user,'chw':CHW.objects.all(),'totals':total,'loc':Location.objects.all()})    
+    myuser=Myuser.objects.filter(role='Chw').order_by('-date_joined')
+    return render(request,'chw.html',{'myuser':user,'user':myuser,'totals':total})
+@login_required
+def userprofile_view(request):
+    return render(request,'userprofile.html')
+@login_required
+def setting_view(request):
+    return render(request,'settings.html')
+@login_required
+def notification_view(request):
+    return render(request,'notifications.html')
+@login_required
+def pandb_view(request):
+    return render(request,'parentsandbaby.html')  
+@login_required  
+def vandm_view(request):
+    return render(request,'vaccineandmeasure.html')
+@login_required
+def report_view(request):
+    return render(request,'reports.html')
+@login_required
+def admin_view(request):
+    return render(request,'admins.html')
+@login_required
+def babies(request):
+    return render(request,'babies.html') 
 @login_required(login_url='/login/')
 def addchw(request):
     if request.method == 'POST':
-        print(request.POST)
-        if 'password1' not in request.POST or 'password2' not in request.POST:
-            request.POST = request.POST.copy()  # Make the POST data mutable
-            request.POST['password1'] = 'umwana123'  # Default password1
-            request.POST['password2'] = 'umwana123'  # Default password2
         form1 = CustomUserCreationForm(request.POST)
-        form3 = CHWCreationForm(request.POST)
-        if form1.is_valid() and form3.is_valid():
-            print("Forms are valid.")
-            user = form1.save(commit=False)
-            print(f"User before save: {user}")
+        if form1.is_valid():
+            user = form1.save()
+            #user.role = 'chw'
             user.save()
-            print("User saved.")
-    
-            chw = form3.save(commit=False)
-            chw.User = user  # Associate user with CHW
-            print(f"CHW before save: {chw}")
-            chw.save()
-            print("CHW saved.")
-    
-            return redirect('chw')
-        else:
-            print("Form1 errors:", form1.errors)
-            print("Form3 errors:", form3.errors)
-
-        # if form1.is_valid() and form3.is_valid():
-        #     # Save the custom user first
-        #     user = form1.save(commit=False)
-        #     user.role='Chw'
-        #     user.save()
-        #     # Save the CHW record (with the user assigned)
-        #     chw = form3.save(commit=False)
-        #     chw.User = user  # Associate the user with this CHW
-        #     chw.save()
-        #     messages.success(request,"Saved successful")
-        #     return redirect('chw')  # Redirect after successful submission
-        # else:
-        #     print("Form1 errors:", form1.errors)  # Debugging
-        #     print("Form3 errors:", form3.errors)  # Debugging
+            # Notify hospital admin
+            try:
+                send_mail(
+                    'New CHW User Created',
+                    f'A new CHW user {user.first_name} {user.last_name} has been created. <center>Please confirm their hospital assignment.</center>',
+                    'irumvagadanaclet@gmail.com',  # Sender email
+                    ['irumvagadanaclet@gmail.com'],  # Hospital admin email
+                    fail_silently=False,
+                )
+                return redirect('chw')
+            except Exception as e:
+                return redirect('chw')
     else:
-        form1 = CustomUserCreationForm()
-        form3 = CHWCreationForm()
-    return render(request, 'addchw.html', {'form1': form1, 'form3': form3})
-@login_required(login_url='/login/')
-def chw_view(request):
-    user=request.user
-    return render(request,'chw.html',{'user':user,'totals':total})
+        form1=CustomUserCreationForm(request.POST)
+    return render(request, 'addchw.html', {'form1': form1})
+@login_required
+def hospital_view(request):
+    return render(request,'hospitals.html')
+

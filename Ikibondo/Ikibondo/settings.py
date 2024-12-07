@@ -138,3 +138,11 @@ AUTHENTICATION_BACKENDS=[
     'django.contrib.auth.backends.ModelBackend',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
+#email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Gmail's SMTP server
+EMAIL_PORT = 587  # Port for TLS
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'djanaclet@gmail.com'  # Your Gmail address
+EMAIL_HOST_PASSWORD ='pily zqke qnme pfvv'  # Your Gmail app password
