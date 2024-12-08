@@ -142,8 +142,8 @@ def addchw(request):
             # Notify hospital admin
             try:
                 send_mail(
-                    'New CHW User Created',
-                    f'A new CHW user {user.first_name} {user.last_name} has been created. <center>Please confirm their hospital assignment.</center>',
+                    'New Comunity Health Worker User Created',
+                    f'A new CHW user {user.first_name} {user.last_name} has been created. \nPlease confirm their hospital assignment.\n\nBest regards,\nIKIBONDO WEB',
                     'irumvagadanaclet@gmail.com',  # Sender email
                     ['irumvagadanaclet@gmail.com'],  # Hospital admin email
                     fail_silently=False,
