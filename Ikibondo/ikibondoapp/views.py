@@ -36,7 +36,18 @@ def contactus(request):
         contact=Feedback(FUll_Name=fullname,Email=email,Subject=subject,Message=message)
         contact.save()
         info={'name':"Thank you for sending us message!!"}
-        return render(request,'contactus.html',{'info':info})
+        try:
+            send_mail(
+                'Your feedback has been recieved successfull!',
+                f'Hello {fullname},\nYour feedback has been recieved well. \nWe will get back to you shortly!\n\nBest regards,\nIKIBONDO WEB',
+                'djanaclet@gmail.com',  # Sender email
+                [email],  # Hospital admin email
+                fail_silently=False,
+            )
+            return render(request,'contactus.html',{'info':info})
+        except Exception as e:
+                info={'name':"failed"}
+                return render(request,'contactus.html',{'info':info})
     return render(request,'contactus.html')
 def login_view(request):
     if request.method=='POST':
@@ -78,26 +89,29 @@ def logout_view(request):
         return redirect('login')
     logout(request)
     return redirect('login')
-sum1,sum2,sum3,sum4,sum5=0,0,0,0,0
+sum1,sum2,sum3,sum4,sum5,sum6=0,0,0,0,0,0
 for g in Myuser.objects.all():
     sum1+=1
 for g in VaccinatedBaby.objects.all():
     sum3+=1
 for g in Hospital.objects.all():
     sum4+=1
-for k in CHW.objects.all():
+for k in Myuser.objects.filter(role='Superadmin' or 'Nurse'):
     sum5+=1
+for g in Myuser.objects.filter(role='Chw'):
+    sum6+=1
 total={
     'totaluser':sum1,
     'totalbabies':sum2,
     'totaltests':sum3,
     'totalhospital':sum4,
-    'totalchw':sum5,
+    'totalchw':sum6,
 }
 @login_required(login_url='/login/')
 def useradmin(request):
     user=request.user
-    return render(request,'admindashboard.html',{'user':user,'totals':total})
+    myusers=Myuser.objects.filter(role='Chw').order_by('-date_joined')
+    return render(request,'admindashboard.html',{'user':user,'totals':total,'userchws':myusers})
 @login_required(login_url='/login/')
 def adminfeedback(request):
     user=request.user
@@ -105,8 +119,8 @@ def adminfeedback(request):
 @login_required(login_url='/login/')
 def chw(request):
     user=request.user
-    myuser=Myuser.objects.filter(role='Chw').order_by('-date_joined')
-    return render(request,'chw.html',{'myuser':user,'user':myuser,'totals':total})
+    myuser=Myuser.objects.filter(role='Chw').order_by('date_joined')
+    return render(request,'chw.html',{'user':user,'userss':myuser,'totals':total})
 @login_required
 def userprofile_view(request):
     return render(request,'userprofile.html')
@@ -127,7 +141,9 @@ def report_view(request):
     return render(request,'reports.html')
 @login_required
 def admin_view(request):
-    return render(request,'admins.html')
+    user=request.user
+    myusers=Myuser.objects.filter(role='Superadmin' or 'Nurse').order_by('-date_joined')
+    return render(request,'admins.html',{'userss':myusers,'totals':total,'user':user})
 @login_required
 def babies(request):
     return render(request,'babies.html') 
@@ -136,16 +152,16 @@ def addchw(request):
     if request.method == 'POST':
         form1 = CustomUserCreationForm(request.POST)
         if form1.is_valid():
-            user = form1.save()
-            #user.role = 'chw'
+            user = form1.save(commit=False)
+            user.is_active = False
             user.save()
             # Notify hospital admin
             try:
                 send_mail(
                     'New Comunity Health Worker User Created',
                     f'A new CHW user {user.first_name} {user.last_name} has been created. \nPlease confirm their hospital assignment.\n\nBest regards,\nIKIBONDO WEB',
-                    'irumvagadanaclet@gmail.com',  # Sender email
-                    ['irumvagadanaclet@gmail.com'],  # Hospital admin email
+                    'djanaclet@gmail.com',  # Sender email
+                    ['tumukundegentille001@gmail.com'],  # Hospital admin email
                     fail_silently=False,
                 )
                 return redirect('chw')
@@ -156,5 +172,7 @@ def addchw(request):
     return render(request, 'addchw.html', {'form1': form1})
 @login_required
 def hospital_view(request):
-    return render(request,'hospitals.html')
+    user=request.user
+    hos=Hospital.objects.all()
+    return render(request,'hospitals.html',{'user':user,'totals':total,'hospitals':hos})
 

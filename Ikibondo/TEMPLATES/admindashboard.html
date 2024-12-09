@@ -49,13 +49,21 @@
        color: #000;
        font-weight: bolder;
      }
+     .hov:hover{
+      background-color: #FBBC04;
+      color:#000;
+      border-radius: 0%;
+     }
+     .hovs:hover{
+      background-color: #C1C7CD;
+     }
    </style>
   </head>
   <body class="overflow-x-hidden">
      <nav class="navbar bg-body-tertiary m-0 p-0">
      <div class="container-fluid p-0 m-0">
        <a class="navbar-brand p-0 m-0" href="{% url 'useradmin' %}">
-         <img src="{% static 'img/ikibondo_logo-removebg-preview.png' %}" id="backcolor" alt="Logo" width="238.11" height="69" class="d-inline-block align-text-center me-lg-3">
+         <img src="{% static 'img/ikibondo_logo-removebg-preview.png' %}" id="backcolor" alt="Logo" width="317.48" height="69" class="d-inline-block align-text-center me-lg-3">
          {% if user.role == 'Superadmin' or user.role == 'Nurse' %} 
          <b>Admin Dashboard</b>
          {%else%}
@@ -101,24 +109,26 @@
          <input type="text" class="form-control bg-light shadow-sm" placeholder=" Search" aria-label="Username" aria-describedby="basic-addon1">
        </div>
      </form>
-     <a href="#" class="remove">
-      <div class="p-2 ms-2 shadow-sm bg-light fw-bold">
+     <a href="{% url 'useradmin' %}" class="remove">
+      <div class="p-2 ms-2 shadow-sm bg-light fw-bold hovs">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
           <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z"/>
         </svg>
         Overview</div>
      </a>
-     {%if user.role == 'Superadmin' or user.role == 'Nurse'%}
+     {%if user.role == 'Superadmin'%}
      <a href="{% url 'admins'%}" class="remove">
-      <div class="p-2 ms-2 shadow-sm fw-bold">
+      <div class="p-2 ms-2 shadow-sm fw-bold hovs">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
           <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
         </svg>
         User admins
        </div>
      </a>
+     {%endif%}
+     {% if user.role == 'Superadmin' or user.role == 'Nurse'%}
      <a href="{% url 'chw'%}" class="remove">
-      <div class="p-2 ms-2 shadow-sm fw-bold">
+      <div class="p-2 ms-2 shadow-sm fw-bold  hovs">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
           <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
         </svg>
@@ -126,30 +136,30 @@
        </div>
      </a>
      {%endif%}
-     <a href="{% url 'parents' %}" class="remove">
-      <div class="p-2  ms-2 shadow-sm fw-bold">
+     <a href="{% url 'parents' %}" class="remove hovs">
+      <div class="p-2  ms-2 shadow-sm fw-bold hovs">
         <i class="bi bi-person-hearts"></i>
          Parents & Baby</div>
      </a>
      <a href="{% url 'vaccine' %}" class="remove">
-      <div class="p-2 ms-2 shadow-sm fw-bold">
+      <div class="p-2 ms-2 shadow-sm fw-bold hovs">
         <i class="bi bi-clipboard-pulse"></i>
          Vaccine & Measure</div>
      </a>
      {% if user.role == 'Superadmin' or user.role == 'Nurse'%}
      <a href="{% url 'hospitals' %}" class="remove">
-      <div class="p-2 ms-2 shadow-sm fw-bold">
+      <div class="p-2 ms-2 shadow-sm fw-bold  hovs">
         <i class="bi bi-clipboard-pulse"></i>
          Hospitals</div>
      </a>
      <a href="{% url 'reports' %}" class="remove">
-      <div class="p-2 ms-2 shadow-sm fw-bold">
+      <div class="p-2 ms-2 shadow-sm fw-bold  hovs">
         <i class="bi bi-bar-chart-line-fill"></i>
         Reports</div>
      </a>
      {%endif%}
      <a href="{% url 'notification'%}" class="remove">
-      <div class="p-2 ms-2 shadow-sm fw-bold">
+      <div class="p-2 ms-2 shadow-sm fw-bold  hovs">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
           <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
         </svg>
@@ -157,7 +167,7 @@
      </a>
      {%if user.role == 'Superadmin' or user.role == 'Nurse'%}
      <a href="{% url 'adminfeedback'%}" class="remove">
-      <div class="p-2 ms-2 shadow-sm fw-bold">
+      <div class="p-2 ms-2 shadow-sm fw-bold  hovs">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
           <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z"/>
         </svg>Feedback
@@ -167,7 +177,7 @@
         <div>
         <form method="post" action="{% url 'logout' %}" class="container-fluid p-0 shadow-sm mt-1">
           {% csrf_token %}
-          <button type="submit" class="p-2 ms-2 shadow-sm fw-bold container-fluid border-0 bg-white text-start">
+          <button type="submit" class="p-2 ms-2 shadow-sm fw-bold container-fluid border-0 bg-white text-start hovs">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
               <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
@@ -181,9 +191,9 @@
              <nav class="navbar navbar-expand-lg bg-body-tertiary">
                <div class="container-fluid">
                 {%if user.role == 'Superadmin' or user.role == 'Nurse'%}
-               <a class="navbar-brand d-lg-none " href="#">Admin Dashboard</a>
+               <a class="navbar-brand d-lg-none" href="{% url 'useradmin' %}">Admin Dashboard</a>
                {%else%}
-               <a class="navbar-brand d-lg-none " href="#">CHW Dashboard</a>
+               <a class="navbar-brand d-lg-none" href="{% url 'chw' %}">CHW Dashboard</a>
                {%endif%}
                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                <span class="navbar-toggler-icon"></span>
@@ -215,41 +225,41 @@
              </nav>
              </div>
              <div class="row px-2 hstack gap-2">
-               <div class="card col-md-2"> 
+               <div class="card col-md-2 hov"> 
                  <div class="card-body">
                    <h5 class="card-title">User Total</h5>
                    <div class="hstack">
                    <div class="card-link fs-5 h1">
                     {{totals.totaluser}}
                    </div>
-                   <div class="card-link bg-light p-1 ms-auto">0%</div>
+                   <div class="card-link bg-light p-1 rounded ms-auto">0%</div>
                    </div>
                  </div>
                </div>
-               <div class="card col-md-2">
+               <div class="card col-md-2 hov">
                  <div class="card-body">
                    <h5 class="card-title">Total Babies</h5>
                    <div class="hstack">
                    <div class="card-link fs-5 h1">{{totals.totalbabies}}</div>
-                   <div class="card-link bg-light p-1 ms-auto">0%</div>
+                   <div class="card-link bg-light rounded p-1 ms-auto">0%</div>
                    </div>
                  </div>
                </div>
-               <div class="card col-md-2">
+               <div class="card col-md-2 hov">
                  <div class="card-body">
                    <h5 class="card-title h6">Total Test given</h5>
                    <div class="hstack">
                    <div class="card-link fs-5 h1">{{totals.totaltests}}</div>
-                   <div class="card-link bg-light p-1 ms-auto">0%</div>
+                   <div class="card-link bg-light rounded p-1 ms-auto">0%</div>
                    </div>
                  </div>
                </div>
-               <div class="card col-md-2">
+               <div class="card col-md-2 hov">
                  <div class="card-body">
                    <h5 class="card-title">Total Hospitals</h5>
                    <div class="hstack">
                    <div class="card-link fs-5 h1">{{totals.totalhospital}}</div>
-                   <div class="card-link bg-light p-1 ms-auto">0%</div>
+                   <div class="card-link bg-light hov rounded p-1 ms-auto">0%</div>
                    </div>
                  </div>
                </div>
@@ -272,8 +282,41 @@
                <div class="card col-md-4">
                  <div class="card-body">
                    <h5 class="card-title"></h5>
-                   <h6 class="card-subtitle mb-2 text-body-secondary">Pie chart showing the overview of how babies life in red zone are in five districts of Rwanda </h6>
-                   <div class="circle-graph m-auto"></div>
+                   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                   <div class="hstack" style="height: 300px; width: 300px;">
+                    <h6 class="p-2  card-subtitle mb-2 text-body-secondary">Pie chart showing the overview of how babies life in red zone are in five districts of Rwanda </h6>
+                   <canvas class="ms-auto" id="myChart"></canvas>
+                   </div>
+                    <script>
+                        // Data setup
+                        const data = {
+                          labels: ['Red', 'Blue', 'Yellow'],
+                          datasets: [{
+                            label: 'My First Dataset',
+                            data: [300, 50, 100],
+                            backgroundColor: [
+                              'rgb(255, 99, 132)',
+                              'rgb(54, 162, 235)',
+                              'rgb(255, 205, 86)'
+                            ],
+                            hoverOffset: 4
+                          }]
+                        };
+                        // Chart configuration
+                        const config = {
+                          type: 'doughnut',
+                          data: data,
+                          options:{
+                            responsive: true,          // Enables responsiveness
+                            maintainAspectRatio: false, // Prevents maintaining the default aspect ratio
+                            cutout: '20%', // Adjust the size of the inner radius (reduce doughnut thickness)
+                            radius: '80%', // Adjust the outer radius
+                          }
+                        };
+                        // Render the chart in the canvas
+                        const ctx = document.getElementById('myChart').getContext('2d');
+                        const myChart = new Chart(ctx, config);
+                   </script>
                  </div>
                </div>
              </div>
@@ -281,7 +324,7 @@
                <div class="card col-md-6">
                  <div class="card-body">
                  <h5 class="card-title">Most active Comunity health worker</h5>
-                 <table class="table table-success table-striped">
+                 <table class="table table-striped table-hover">
                    <thead>
                      <tr>
                        <th scope="col">#</th>
@@ -292,48 +335,15 @@
                      </tr>
                    </thead>
                    <tbody>
-                     <tr>
-                       <th scope="row">1</th>
-                       <td>Felecie Muganga</td>
-                       <td>Gisovu post the centre</td>
-                       <td>Gisovu</td>
-                       <td>12</td>
-                     </tr>
-                     <tr>
-                       <th scope="row">2</th>
-                       <td>Felecie Muganga</td>
-                       <td>Gisovu post the centre</td>
-                       <td>Gisovu</td>
-                       <td>12</td>
-                     </tr>
-                     <tr>
-                       <th scope="row">3</th>
-                       <td>Felecie Muganga</td>
-                       <td>Gisovu post the centre</td>
-                       <td>Gisovu</td>
-                       <td>12</td>
-                     </tr>
-                     <tr>
-                       <th scope="row">1</th>
-                       <td>Felecie Muganga</td>
-                       <td>Gisovu post the centre</td>
-                       <td>Gisovu</td>
-                       <td>12</td>
-                     </tr>
-                     <tr>
-                       <th scope="row">1</th>
-                       <td>Felecie Muganga</td>
-                       <td>Gisovu post the centre</td>
-                       <td>Gisovu</td>
-                       <td>12</td>
-                     </tr>
-                     <tr>
-                       <th scope="row">1</th>
-                       <td>Felecie Muganga</td>
-                       <td>Gisovu post the centre</td>
-                       <td>Gisovu</td>
-                       <td>12</td>
-                     </tr>
+                    {% for users in userchws|slice:":6" %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{users.first_name}} {{users.last_name}}</td>
+                      <td></td>
+                      <td></td>
+                      <td>0%</td>
+                    </tr>
+                    {%endfor%}
                    </tbody>
                  </table>
                  </div>
@@ -341,7 +351,7 @@
                <div class="card col-md-5 p-0 m-0">
                  <div class="card-body">
                  <h5 class="card-title">Hospital Reports list</h5>
-                 <table class="table table-success table-striped">
+                 <table class="table table-striped table-hover">
                    <thead>
                      <tr>
                        <th scope="col">Hospital Name</th>

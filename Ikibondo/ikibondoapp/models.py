@@ -82,6 +82,7 @@ class Hospital(models.Model):
     LocationId=models.ForeignKey(Location, on_delete=models.CASCADE,related_name='Hospital')
     Names= models.CharField(max_length=100)
     Hospitaltype= models.TextField()
+    Recordeddate=models.IntegerField(null=True)
     def __str__(self):
         return self.Names
 
@@ -105,11 +106,12 @@ class Device(models.Model):
     
 #checked out
 class Vacinne_and_measure(models.Model):
-    VID= models.PositiveBigIntegerField(primary_key=True)
+    VID= models.AutoField(primary_key=True)
     Vacinne_name= models.CharField(max_length=100)
+    Age= models.PositiveIntegerField()
+    Dose=models.CharField(max_length=20)
     Details= models.TextField()
-    Age_Limit= models.PositiveIntegerField()
-    Time_to_inject=models.PositiveIntegerField()
+    Recordeddate=models.DateTimeField(auto_created=True)
     def __str(self):
         return self.Vacinne_name
 
@@ -174,6 +176,15 @@ class VaccinatedBaby(models.Model):
         return self.Dose
     class Meta:
         verbose_name_plural='VaccinatedBabies'
+class Reminder(models.Model):
+    BID=models.ForeignKey(Baby,on_delete=models.CASCADE,related_name='baby_profile')
+    VID=models.ForeignKey(Vacinne_and_measure,on_delete=models.CASCADE)
+    Start_vaccine_date=models.DateField()
+    Vaccine_reminder=models.DateField()
+    def _str_(self):
+        return self.Vaccine_reminder
+    class Meta:
+        verbose_name_plural='Reminders'
 
 
 
