@@ -10,6 +10,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from time import sleep
 from django.core.mail import send_mail
+from django.core.exceptions import PermissionDenied
+
 
 def signup(request):
     if request.method=='POST':
@@ -175,4 +177,10 @@ def hospital_view(request):
     user=request.user
     hos=Hospital.objects.all()
     return render(request,'hospitals.html',{'user':user,'totals':total,'hospitals':hos})
-
+@login_required
+def userdetail(request,phone_number):
+    user=request.user
+    editx=Myuser.objects.get(phone_number=phone_number)
+    if request.method=='POST': 
+        return render(request,'userdetails.html',{'phone_number':phone_number,'editx':editx})
+    return render(request,'userdetails.html',{'phone_number':phone_number,'editx':editx})

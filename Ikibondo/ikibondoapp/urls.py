@@ -22,6 +22,8 @@ urlpatterns=[
     path('admins',admin_view,name='admins'),
     path('babies',babies,name='babies'),
     path('hospitals',hospital_view,name='hospitals'),
+    #path(r'^(?P<phone_number>[\w])/$',userdetail),
+    path('<str:phone_number>',userdetail,name='userdetail'),
 ]
 
 urlpatterns+= staticfiles_urlpatterns()
