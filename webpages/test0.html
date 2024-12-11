@@ -1,0 +1,66 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        } 
+        *{
+            margin: 0;
+        }
+        body{
+            font-family: system-ui;
+            width: 90%;
+            margin-inline: auto;
+        }
+        img{
+            max-width: 100%;
+            display: block;
+        }
+        .wrapper{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap:1rem;
+            margin-top: 5rem ;
+        }
+        .box{
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 2rem;
+            text-align: center;
+            display: grid;
+            grid-template-rows: subgrid;
+            grid-row:span 3;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="box">
+            <h2>hello</h2>
+            <p>hsdfsdfsgv dsfsbnnnn nnnnnnnnnnnnn nnnnnnnnn nnnnnnnnnn nnnnnn nnnnnnx sdscbhff dgsddscv ddfd</p>
+             <img src="img/baby pic 3.png" alt="good boy"/>
+        </div>
+        <div class="box">
+            <h2>hello</h2>
+            <p>hsdfsdfsgv dsfs sdscbhff dgsddscv ddfd</p>
+             <img src="img/baby pic 3.png" alt="good boy"/>
+        </div>
+        <div class="box">
+            <h2>hello</h2>
+            <p>hsdfsdfsgv dsfhgggggg gggggg gggggg ggggggggg ggggggggggg ggggggg gggggggg gggggg gggggggg ggggggs sdscbhff dgsddscv ddfd</p>
+             <img src="img/baby pic 3.png" alt="good boy"/>
+        </div>
+        <div class="box">
+            <h2>hello</h2>
+            <p>hsdfsdfsgv dsfs sdscbhff dgsddscv ddfd</p>
+             <img src="img/baby pic 3.png" alt="good boy"/>
+        </div>
+    </div>
+   
+</body>
+</html>

@@ -44,7 +44,13 @@ class Myuser(AbstractUser):
     email=models.EmailField(unique=True,blank=True)
     role=models.CharField(choices=[('Nurse','Nurse'),('Superadmin','Superadmin'),('Chw','Chw'),('Parent','Parent')],max_length=50)
     gender= models.CharField(choices=[('Male','Male'),('Female','Female')],max_length=20)
-    Age= models.PositiveIntegerField(null=True)
+    Age= models.PositiveIntegerField(null=True,validators=[
+            RegexValidator(
+                regex=r'^\d{2}$',
+                message="age must be 2 digits long.",
+                code='invalid_age_value'
+            )
+            ])
     need_password_change=models.BooleanField(default=True)
     USERNAME_FIELD='phone_number'
     REQUIRED_FIELDS=['email']
