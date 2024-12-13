@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404,reverse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
@@ -12,7 +12,11 @@ from time import sleep
 from django.core.mail import send_mail
 from django.core.exceptions import PermissionDenied
 
-
+def returnsum(modelname):
+    s=0
+    for i in modelname.objects.all():
+        s=s+1
+    return s
 def signup(request):
     if request.method=='POST':
         forms=CustomUserCreationForm(request.POST)
@@ -91,11 +95,7 @@ def logout_view(request):
         return redirect('login')
     logout(request)
     return redirect('login')
-sum1,sum2,sum3,sum4,sum5,sum6=0,0,0,0,0,0
-for g in Myuser.objects.all():
-    sum1+=1
-for g in VaccinatedBaby.objects.all():
-    sum3+=1
+sum2,sum4,sum5,sum6=0,0,0,0
 for g in Hospital.objects.all():
     sum4+=1
 for k in Myuser.objects.filter(role='Superadmin' or 'Nurse'):
@@ -103,9 +103,9 @@ for k in Myuser.objects.filter(role='Superadmin' or 'Nurse'):
 for g in Myuser.objects.filter(role='Chw'):
     sum6+=1
 total={
-    'totaluser':sum1,
+    'totaluser':returnsum(Myuser),
     'totalbabies':sum2,
-    'totaltests':sum3,
+    'totaltests':returnsum(VaccinatedBaby),
     'totalhospital':sum4,
     'totalchw':sum6,
 }
@@ -131,7 +131,9 @@ def setting_view(request):
     return render(request,'settings.html')
 @login_required
 def notification_view(request):
-    return render(request,'notifications.html')
+    notifications = request.user.notifications.all()
+    return render(request, 'notifications.html', {'notifications': notifications})
+
 @login_required
 def pandb_view(request):
     return render(request,'parentsandbaby.html')  
@@ -140,7 +142,11 @@ def vandm_view(request):
     return render(request,'vaccineandmeasure.html')
 @login_required
 def report_view(request):
-    return render(request,'reports.html')
+    userss=request.user.approval_approvers.all()
+    userss1=Myuser.objects.filter(is_active=False,role='Chw')
+    userss=Myuser.objects.filter(is_active=False,role='Nurse')
+    userss2=Myuser.objects.filter(is_active=False,role='Parent')
+    return render(request,'reports.html',{'userss':userss,'user':request.user,'usersschw':userss,'usernurse':userss1,'userparent':userss2})
 @login_required
 def admin_view(request):
     user=request.user
@@ -178,9 +184,70 @@ def hospital_view(request):
     hos=Hospital.objects.all()
     return render(request,'hospitals.html',{'user':user,'totals':total,'hospitals':hos})
 @login_required
-def userdetail(request,phone_number):
+def userdetail(request,phone):
     user=request.user
-    editx=Myuser.objects.get(phone_number=phone_number)
+    editx = get_object_or_404(Myuser, phone_number=phone)
     if request.method=='POST': 
-        return render(request,'userdetails.html',{'phone_number':phone_number,'editx':editx})
-    return render(request,'userdetails.html',{'phone_number':phone_number,'editx':editx})
+        return render(request,'userdetails.html',{'user':user,'editx':editx})
+    return render(request,'userdetails.html',{'user':user,'editx':editx})
+@login_required
+def create_chw(request,phone,role):
+    user_to_approve=get_object_or_404(Myuser,phone_number=phone,role=role)
+    if request.method == 'POST':
+        if role == 'Chw':
+            form = CHWForm(request.POST)
+        else:
+            form=None
+        if form.is_valid():
+            form.save()  # Save the CHW instance to the database
+            approval, created = Approval.objects.get_or_create()
+            approval.approves.add(user_to_approve)
+            approval.approvers.add(request.user)  # Assuming the logged-in user is the approver
+            approval.comment = "User approved successfully."
+            approval.save()
+            # Update user's status
+            user_to_approve.is_active = True  # Activate the user
+            user_to_approve.save()
+
+            # Create a notification for the approved user
+            notification_message = f"Your account has been approved by {request.user.first_name} {request.user.last_name}."
+            Notification.objects.create(
+                user=user_to_approve,
+                message=notification_message
+            )
+            approver_notification = f"You approved {user_to_approve.first_name} {user_to_approve.last_name}'s account."
+            Notification.objects.create(
+                user=request.user,
+                message=approver_notification
+            )
+            messages.success(request, "User approved and notifications sent.")
+        return redirect('chw')  # Redirect to a success page or list view
+    else:
+        if role == 'Chw':
+            form = CHWForm()
+            approves={
+                'phone':phone,
+                'role':role
+            }
+            return render(request, 'approve_chw.html', {'form': form,'user':request.user,'approve':approves})
+        else:    
+            return redirect(reverse("reports"))  # Ensure "report" exists in urls.py
+@login_required
+def add_vaccine(request):
+    if request.method == 'POST':
+        form = VacinneAndMeasureForm(request.POST)
+        if form.is_valid():
+            vaccine = form.save()  # Save the new vaccine record
+            # Send notifications to all users
+            all_users = Myuser.objects.all()
+            for user in all_users:
+                Notification.objects.create(
+                    user=user,
+                    message=f"A new vaccine '{vaccine.Vacinne_name}' has been added for age {vaccine.Age} mouths."
+                )
+            messages.success(request, f"Vaccine '{vaccine.Vacinne_name}' added and notifications sent.")
+            return redirect('vaccine')  # Replace with the URL name of your vaccine list page
+    else:
+        form = VacinneAndMeasureForm()
+
+    return render(request, 'add_vaccine.html', {'form': form,'user':request.user})

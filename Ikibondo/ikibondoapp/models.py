@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser,BaseUserManager,PermissionsMixin
 from django.core.validators import RegexValidator
+from django.conf import settings
+from django.utils.timezone import now
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, phone_number, password=None, **extra_fields):
@@ -57,7 +59,7 @@ class Myuser(AbstractUser):
     
     object=CustomUserManager()
     def __str__(self):
-        return self.phone_number
+        return f"User:{self.first_name} {self.last_name} with: {self.phone_number}"
 
 # #checked True
 class Location(models.Model):
@@ -69,7 +71,7 @@ class Location(models.Model):
     Streetcode=models.CharField(max_length=50,blank=True)
 
     def __str__(self):
-        return  self.District
+        return  f"{self.Country}/{self.Provence}/{self.District}/{self.Village}/{self.Streetcode}"
     class Meta:
         verbose_name_plural="Locations"
 #checked True
@@ -191,7 +193,38 @@ class Reminder(models.Model):
         return self.Vaccine_reminder
     class Meta:
         verbose_name_plural='Reminders'
+class Approval(models.Model):
+    # Many-to-Many relationship to MyUser for approvers
+    approvers = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="approval_approvers",
+        help_text="Users who approve",
+    )
+    # Many-to-Many relationship to MyUser for approved users
+    approves = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="approved_users",
+        help_text="Users being approved",
+    )
+    # Comment field
+    comment = models.TextField(blank=True, null=True, help_text="Approval comments")
+    # Time created field
+    time_created = models.DateTimeField(default=now, help_text="Time approval was created")
 
+    def __str__(self):
+        return f"Approval by {', '.join([user.role for user in self.approvers.all()])}: {', '.join([user.first_name for user in self.approvers.all()])}"
 
+    class Meta:
+        verbose_name = "Approval"
+        verbose_name_plural = "Approvals"
+        ordering = ["-time_created"]
+class Notification(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="notifications")
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(default=now)
+
+    def __str__(self):
+        return f"Notification for {self.user.username}: {self.message}"
 
 # Create your models here.

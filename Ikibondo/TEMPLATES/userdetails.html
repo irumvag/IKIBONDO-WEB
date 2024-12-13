@@ -1,6 +1,6 @@
 {% extends 'base.html'%}
 {%block title%}
-Details
+Ikibondo-User-Details
 {%endblock%}
 {% block menu%}
 <a href="{% url 'useradmin' %}" class="remove">
@@ -98,9 +98,102 @@ Details
         </form>
        </div>
 {%endblock%}
+<style>
+  .color{
+    color:green;
+  }
+</style>
 {%block content%}
-<div class="card rounded-no row">
-{{editx.last_name}}
-{{editx.first_name}}
+<b> Editing: {{editx.last_name}}
+{{editx.first_name}} by {{user.last_name}} {{user.first_name}}</b>
+<div class="wrapper w-100 bg-white">
+  <div class="box1">
+    <h2 class="p2"><center>
+      {%if editx.role == 'Chw' %}
+      Edit Community health worker
+      {%elif editx.role == 'Superadmin' %}
+      Edit Admin
+      {%elif editx.role == 'Parent' %}
+      Edit Parent
+      {%else%}
+      Edit Nurse
+      {%endif%}
+    </center></h2>
+    <hr>
+    <p><b>You are going to edit</b></p>
+    <div class="table-responsive ">
+      <table class="table table-striped table-hover ">
+          <thead class="table-light">                          
+              <th scope="col">NID</th>
+              <th scope="col">Fullnames</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Role</th>
+              <th scope="col">Status</th>
+              <th scope="col">Gender</th>
+            </thead>
+          <tbody id="userTableBody">
+            <tr>
+              <td>{{ editx.nid }}</td>
+              <td>{{ editx.first_name }} {{ editx.last_name }}</td>
+              <td>{{ editx.phone_number }}</td>
+              <td>{{ editx.role }}</td>
+              <td>
+                {%if editx.is_active %}
+                <span class="badge bg-success">Active</span>
+                {%else%}
+                <span class="badge bg-danger">Inactive</span>
+                {%endif%}
+              </td>
+              <td>{{ editx.gender }}</td>
+            {% if editx is None %}
+            <tr>
+              <td colspan="10" class="text-center">No users found</td>
+            </tr>
+            {%endif%}
+          </tbody>
+       </table>
+    </div>
+  </div>
+  </div>
+<div class="wrapper">
+  <div class="box1">
+    <form action="" method="post" style="max-width: 400px; margin: auto;">
+      <label for="nid" style="display: block; margin-bottom: 10px;">
+        <b>National ID:</b>
+        <input type="number" name="nid" id="nid" value="" style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc;">
+      </label>
+    
+      <label for="first_name" style="display: block; margin-bottom: 10px;">
+        <b>Names:</b>
+        <input type="text" name="first_name" id="first_name" value="{{editx.first_name}}" placeholder="First Name" style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc;">
+      </label>
+    
+      <label for="last_name" style="display: block; margin-bottom: 10px;">
+        <input type="text" name="last_name" id="last_name" placeholder="Last Name" value="{{editx.last_name}}" style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc;">
+      </label>
+    
+      <label for="phone" style="display: block; margin-bottom: 10px;">
+        <b>Phone:</b>
+        <input type="tel" name="phone" id="phone" value="{{editx.phone_number}}" style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc;">
+      </label>
+    
+      <label for="village" style="display: block; margin-bottom: 10px;">
+        <b>Village:</b>
+        <input type="text" name="village" id="village" style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc;">
+      </label>
+    
+      <label for="comment" style="display: block; margin-bottom: 20px;">
+        <b>Comment:</b>
+        <textarea name="comment" required id="comment" cols="30" rows="5" style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
+      </label>
+    
+      <div style="display: flex; justify-content: space-between;">
+        <button type="button" style="background-color: #ff4d4d; color: white; padding: 10px 20px; border: none; border-radius: 5px;">Discard</button>
+        <button type="submit" style="background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px;">Save</button>
+      </div>
+    </form>    
+  </div>
+</div>
+</div>
 </div>
 {%endblock%}

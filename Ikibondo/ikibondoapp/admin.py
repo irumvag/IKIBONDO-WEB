@@ -22,6 +22,20 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('date_joined',)
     list_filter = ('role', 'gender', 'is_staff', 'is_active')
 
+@admin.register(Approval)
+class ApprovalAdmin(admin.ModelAdmin):
+    list_display = ('id', 'time_created', 'get_approvers', 'get_approves', 'comment')
+    list_filter = ('time_created',)
+    search_fields = ('comment',)
+
+    def get_approvers(self, obj):
+        return ', '.join([Myuser.last_name for Myuser in obj.approvers.all()])
+
+    def get_approves(self, obj):
+        return ", ".join([Myuser.last_name for Myuser in obj.approves.all()])
+
+    get_approvers.short_description = "Approvers"
+    get_approves.short_description = "Approved Users"
 
 admin.site.register(Parent)
 admin.site.register(CHW)

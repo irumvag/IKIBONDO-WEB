@@ -26,14 +26,15 @@ urlpatterns=[
     path('babies',babies,name='babies'),
     path('hospitals',hospital_view,name='hospitals'),
     #path(r'^(?P<phone_number>[\w])/$',userdetail),
-    path('<str:phone_number>',userdetail,name='userdetail'),
+    path('<str:phone>',userdetail,name='userdetail'),
     #reset password url
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     #end reset
-    
+    path('approve_user/<str:phone>/<str:role>/',create_chw,name='approve_user'),
+    path('add_vaccine/',add_vaccine,name='add_vaccine'),
 ]
 
 urlpatterns+= staticfiles_urlpatterns()

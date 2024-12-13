@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
-{% block title%}
+{% extends 'base.html'%}
+{%block title%}
 {%endblock%}
-{% block menu%}
+{%block menu%}
 <a href="{% url 'useradmin' %}" class="remove">
     <div class="p-2 ms-2 shadow-sm fw-bold hovs">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
@@ -30,7 +30,7 @@
    </a>
    {%endif%}
    <a href="{% url 'parents' %}" class="remove hovs">
-    <div class="p-2  ms-2 shadow-sm fw-bold bg-light hovs">
+    <div class="p-2  ms-2 shadow-sm fw-bold hovs">
       <i class="bi bi-person-hearts"></i>
        Parents & Baby</div>
    </a>
@@ -46,7 +46,7 @@
        Hospitals</div>
    </a>
    <a href="{% url 'reports' %}" class="remove">
-    <div class="p-2 ms-2 shadow-sm fw-bold hovs">
+    <div class="p-2 ms-2 shadow-sm fw-bold bg-light hovs">
       <i class="bi bi-bar-chart-line-fill"></i>
       Reports</div>
    </a>
@@ -79,4 +79,15 @@
        </div>
 {%endblock%}
 {%block content%}
-{%endblock%}
+<div class="warapper">
+    <div class="box1">
+        <h2>Add Vaccine and Measure</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit">Add Vaccine</button>
+        </form>
+        <a href="{% url 'vaccine_list' %}">Back to Vaccine List</a>
+    </div>
+</div>
+{endblock}

@@ -22,22 +22,6 @@ class CustomUserCreationForm(UserCreationForm):
             raise forms.ValidationError("Phone number must be exactly 10 digits.")
         return phone_number
 
-class CHWCreationForm(forms.ModelForm):
-    class Meta:
-        model = CHW
-        fields = ['LocationId', 'HID']
-
-    LocationId = forms.ModelChoiceField(
-        queryset=Location.objects.all(),
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        label="Location"
-    )
-    HID = forms.ModelChoiceField(
-        queryset=Hospital.objects.all(),
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        label="Hospital"
-    )
-
 class Addlocation(forms.ModelForm):
     class Meta:
         model = Location
@@ -49,3 +33,28 @@ class Addlocation(forms.ModelForm):
     District = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter district'}))
     Village = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter village'}))
     Streetcode = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter streetcode (optional)'}))
+
+class CHWForm(forms.ModelForm):
+    class Meta:
+        model = CHW
+        fields = ['User', 'LocationId', 'HID']  # Include only the fields you want
+        widgets = {
+            'User': forms.Select(attrs={'class': 'form-control'}),
+            'LocationId': forms.Select(attrs={'class': 'form-control'}),
+            'HID': forms.Select(attrs={'class': 'form-control'}),
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Filter the User field to only include users with role='chw' and is_active=False
+        self.fields['User'].queryset = Myuser.objects.filter(role='chw', is_active=False)
+
+class VacinneAndMeasureForm(forms.ModelForm):
+    class Meta:
+        model = Vacinne_and_measure
+        fields = ['Vacinne_name', 'Age', 'Dose', 'Details']
+        widgets = {
+            'Details': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Enter details about the vaccine'}),
+            'Vacinne_name': forms.TextInput(attrs={'placeholder': 'Vaccine Name'}),
+            'Age': forms.NumberInput(attrs={'placeholder': 'Recommended Age'}),
+            'Dose': forms.TextInput(attrs={'placeholder': 'Dosage (e.g., 1st Dose, Booster, etc.)'}),
+        }
