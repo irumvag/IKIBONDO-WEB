@@ -1,115 +1,9 @@
-{% load static %}
+{% extends 'base.html' %}
 {% load crispy_forms_tags %}
-<html lang="en">
-  <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>
-    {% if user.role == 'Superadmin' or user.role == 'Nurse' %} 
-         Admin Dashboard
-         {%else%}
-         Community health worker Dashboard
-    {%endif%}
-   </title>
-   <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.min.css' %}">
-   <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
-      rel="stylesheet"
-    />
-   <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.css' %}">
-   <style>
-     #backcolor{
-     background-color: #FBBC04;  
-    }
-    .icon-design{
-             border-radius: 50%;
-             padding: 8px;
-             background-color: #D9D9D9;
-     }
-     .circle-graph {
-       width: 150px;
-       height: 150px;
-       border-radius: 50%;
-       background: conic-gradient(
-         #C1C7CD 0% 70%,   
-         #697077 70% 100%  
-       );
-     }
-     .circle-grath::after{
-       position: absolute;
-       width: 10px;
-       height: 10px;
-       border-radius: 50%;
-       background: conic-gradient(
-         #fff 0% 80%, 
-         #fff 80% 100%, 
-       );
-     }
-     .remove{
-      text-decoration: none;
-       color: #000;
-       font-weight: bolder;
-     }
-     .hov:hover{
-      background-color: #FBBC04;
-      color:#000;
-      border-radius: 0%;
-     }
-     .hovs:hover{
-      background-color: #C1C7CD;
-     }
-   </style>
-  </head>
-  <body class="overflow-x-hidden">
-     <nav class="navbar bg-body-tertiary m-0 p-0">
-     <div class="container-fluid p-0 m-0">
-       <a class="navbar-brand p-0 m-0" href="{% url 'useradmin' %}">
-         <img src="{% static 'img/ikibondo_logo-removebg-preview.png' %}" id="backcolor" alt="Logo" width="317.48" height="69" class="d-inline-block align-text-center me-lg-3">
-         {% if user.role == 'Superadmin' or user.role == 'Nurse' %} 
-         <b>Admin Dashboard</b>
-         {%else%}
-         <b>Community health worker Dashboard</b>
-         {%endif%}
-       </a>
-     </div>
-     </nav>
-     <div class="container-fluid">
-       <div class="row">
-         <div class="col-lg-2 col-md-3 d-none d-md-block vh-100 p-0 m-0 bg-white border-end bg-boby-tertiary">
-      <div class="my-2 d-flex ">
-        <a class="m-auto remove" href="{% url 'userprofile' %}">
-          <div class="icon-design m-auto">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
-              <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
-            </svg>
-      </div></a>
-      <a class="m-auto remove" href="{% url 'setting' %}">
-        <div class="icon-design m-auto">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
-              <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
-              <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
-            </svg>
-      </div>
-      </a>
-      <a class="m-auto remove" href="{% url 'notification'%}">
-        <div class="icon-design">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
-              <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
-            </svg>
-      </div>
-      </a>
-   </div>
-     <form class="container-fluid">
-       <div class="input-group">
-         <span class="input-group-text" id="basic-addon1"><button type="button" class="border-0 bg-light">
-           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-           </svg>
-           </button>
-         </span>
-         <input type="text" class="form-control bg-light shadow-sm" placeholder=" Search" aria-label="Username" aria-describedby="basic-addon1">
-       </div>
-     </form>
+{% block title%}
+Ikibondo-adduser
+{%endblock%}
+{%block menu%}
      <a href="{% url 'useradmin' %}" class="remove">
       <div class="p-2 ms-2 shadow-sm fw-bold hovs">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
@@ -185,46 +79,9 @@
             </svg> Logout</button>         
           </form>
          </div>
-     </div>
+{% endblock %}
        
-         <div class="col-lg-10 col-md-9 bg-light m-0">
-             <div class="row">
-             <nav class="navbar navbar-expand-lg bg-body-tertiary">
-               <div class="container-fluid">
-                {%if user.role == 'Superadmin' or user.role == 'Nurse'%}
-               <a class="navbar-brand d-lg-none" href="{% url 'useradmin' %}">Admin Dashboard</a>
-               {%else%}
-               <a class="navbar-brand d-lg-none" href="{% url 'chw' %}">CHW Dashboard</a>
-               {%endif%}
-               <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-               <span class="navbar-toggler-icon"></span>
-               </button>
-               <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-               <div class="navbar-nav">
-                 <a class="nav-link active pt-3 fw-bold" aria-current="page" href="#" style="color: #001D6C;">Overview</a>
-                 {%if user.role == 'Superadmin' or user.role == 'Nurse'%}
-                 <div> <a class="nav-link pt-3" style="color: #001D6C;" href="{% url 'admins'%}">Admins</a></div>
-                 <div> <a class="nav-link pt-3" style="color: #001D6C;" href="{% url 'chw'%}">CHW</a></div>
-                 {%endif%}
-                 <div class="dropdown nav-link">
-                     <b class="btn btn-secondary dropdown-toggle border-0 bg-light  align-text-top" style="color: #001D6C;" data-bs-toggle="dropdown" aria-expanded="false">
-                       Parents and babies
-                     </b>
-                     <ul class="dropdown-menu">
-                       <li><a class="dropdown-item" style="color: #001D6C;" href="{% url 'parents' %}">Parents</a></li>
-                       <li><a class="dropdown-item" style="color: #001D6C;" href="{% url 'babies' %}">Babies</a></li>
-                     </ul>
-                   </div>
-                 </a>
-                 {%if user.role == 'Superadmin' or user.role == 'Nurse'%}
-                 <div> <a class="nav-link pt-3" style="color: #001D6C;" href="{% url 'reports'%}">Reports</a></div>
-                 <div> <a class="nav-link pt-3" style="color: #001D6C;" href="{% url 'adminfeedback'%}">Feedback</a></div>
-                 {%endif%}
-                 <div> <a class="nav-link pt-3" style="color: #001D6C;" href="{% url 'logout' %}">Logout</a></div>
-                 </div>
-               </div>
-             </nav>
-             </div>
+{%block content %}
              <div class="row px-2 hstack gap-2">
                <div class="card col-md-2 hov"> 
                  <div class="card-body">
@@ -301,17 +158,16 @@
                                {{form1|crispy}} 
                             </div>        
                            
-                            <button type="submit" class="btn btn-primary btn-block ">Create user</button>
+                            <button type="submit" onclick="not()" class="btn btn-primary btn-block ">Create user</button>
+                            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+                              <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+                              <script>
+                                  function not(){
+                                  toastr.success('Operation Successful!', 'Success');
+                                  }
+                              </script>
                         </form>
                     </div>
                 </div>
             </div>
-         </div>
-       </div>
-     </div>
-     <footer style="background-color: #697077;" class="m-0 p-0">
-       <p align="center" class="m-0 p-0">&copy;2024 Ikibondo</p>
-     </footer>
-     <script src="{% static 'bootstrap-5.3.3-dist/js/bootstrap.bundle.js' %}"></script>
-  </body>
-  </html>
+{%endblock%}

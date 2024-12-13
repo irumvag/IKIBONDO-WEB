@@ -1,6 +1,9 @@
 from django.urls import path
 from .views import *
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.contrib.auth import views as auth_views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns=[
     path('',index,name=''),
@@ -24,6 +27,14 @@ urlpatterns=[
     path('hospitals',hospital_view,name='hospitals'),
     #path(r'^(?P<phone_number>[\w])/$',userdetail),
     path('<str:phone_number>',userdetail,name='userdetail'),
+    #reset password url
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    #end reset
+    
 ]
 
 urlpatterns+= staticfiles_urlpatterns()
+urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
