@@ -11,6 +11,7 @@ from django.contrib.auth import update_session_auth_hash
 from time import sleep
 from django.core.mail import send_mail
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
 
 def returnsum(modelname):
     s=0
@@ -121,7 +122,7 @@ def adminfeedback(request):
 @login_required(login_url='/login/')
 def chw(request):
     user=request.user
-    myuser=Myuser.objects.filter(role='Chw').order_by('date_joined')
+    myuser=Myuser.objects.filter(role='Chw').order_by('-date_joined')
     return render(request,'chw.html',{'user':user,'userss':myuser,'totals':total})
 @login_required
 def userprofile_view(request):
@@ -131,8 +132,47 @@ def setting_view(request):
     return render(request,'settings.html')
 @login_required
 def notification_view(request):
-    notifications = request.user.notifications.all()
-    return render(request, 'notifications.html', {'notifications': notifications})
+    if request.method == 'POST':
+        receiver = request.POST.get('receiver')  # Corrected typo 'reciever' to 'receiver'
+        title = request.POST.get('title')
+        link = request.POST.get('link', '')  # Optional link
+        mes = request.POST.get('message')
+
+        # Construct the message
+        message = f"{title}\n{link}\n{mes}"
+
+        # Handle the receiver logic
+        if receiver == 'All':
+            users = Myuser.objects.all()  # Get all users
+        elif receiver == 'Superadmin':
+            users = Myuser.objects.filter(role='Superadmin')  # Filter by role
+        elif receiver == 'Chw':
+            users = Myuser.objects.filter(role='Chw')
+        elif receiver == 'Nurse':
+            users = Myuser.objects.filter(role='Nurse')
+        elif receiver == 'Parent':
+            users = Myuser.objects.filter(role='Parent')
+        else:
+            # Handle single specific receiver (e.g., user ID or username passed)
+            try:
+                users = [Myuser.objects.get(phone_number=receiver)]
+            except Myuser.DoesNotExist:
+                return HttpResponse("Invalid receiver", status=400)
+        # Create a notification for each user
+        for user in users:
+            Notification.objects.create(
+                user=user,  # Assign the user
+                message=message,  # Add the constructed message
+            )
+        # Redirect or return a success response
+        return redirect('notification')  # Replace with your success page
+            
+    users=Myuser.objects.all()
+    notification = request.user.notifications.all().order_by('-timestamp')
+    paginator = Paginator(notification, 5)  # Show 5 notifications per page
+    page_number = request.GET.get('page')
+    notifications = paginator.get_page(page_number)
+    return render(request, 'notifications.html', {'notifications': notifications,'users':users})
 
 @login_required
 def pandb_view(request):
@@ -142,11 +182,11 @@ def vandm_view(request):
     return render(request,'vaccineandmeasure.html')
 @login_required
 def report_view(request):
-    userss=request.user.approval_approvers.all()
-    userss1=Myuser.objects.filter(is_active=False,role='Chw')
-    userss=Myuser.objects.filter(is_active=False,role='Nurse')
-    userss2=Myuser.objects.filter(is_active=False,role='Parent')
-    return render(request,'reports.html',{'userss':userss,'user':request.user,'usersschw':userss,'usernurse':userss1,'userparent':userss2})
+    userapproved=request.user.approval_approvers.all()
+    userchw=Myuser.objects.filter(is_active=False,role='Chw')
+    usernurse=Myuser.objects.filter(is_active=False,role='Nurse')
+    userparent=Myuser.objects.filter(is_active=False,role='Parent')
+    return render(request,'reports.html',{'userapproved':userapproved,'user':request.user,'userchw':userchw,'usernurse':usernurse,'userparent':userparent})
 @login_required
 def admin_view(request):
     user=request.user
@@ -191,48 +231,6 @@ def userdetail(request,phone):
         return render(request,'userdetails.html',{'user':user,'editx':editx})
     return render(request,'userdetails.html',{'user':user,'editx':editx})
 @login_required
-def create_chw(request,phone,role):
-    user_to_approve=get_object_or_404(Myuser,phone_number=phone,role=role)
-    if request.method == 'POST':
-        if role == 'Chw':
-            form = CHWForm(request.POST)
-        else:
-            form=None
-        if form.is_valid():
-            form.save()  # Save the CHW instance to the database
-            approval, created = Approval.objects.get_or_create()
-            approval.approves.add(user_to_approve)
-            approval.approvers.add(request.user)  # Assuming the logged-in user is the approver
-            approval.comment = "User approved successfully."
-            approval.save()
-            # Update user's status
-            user_to_approve.is_active = True  # Activate the user
-            user_to_approve.save()
-
-            # Create a notification for the approved user
-            notification_message = f"Your account has been approved by {request.user.first_name} {request.user.last_name}."
-            Notification.objects.create(
-                user=user_to_approve,
-                message=notification_message
-            )
-            approver_notification = f"You approved {user_to_approve.first_name} {user_to_approve.last_name}'s account."
-            Notification.objects.create(
-                user=request.user,
-                message=approver_notification
-            )
-            messages.success(request, "User approved and notifications sent.")
-        return redirect('chw')  # Redirect to a success page or list view
-    else:
-        if role == 'Chw':
-            form = CHWForm()
-            approves={
-                'phone':phone,
-                'role':role
-            }
-            return render(request, 'approve_chw.html', {'form': form,'user':request.user,'approve':approves})
-        else:    
-            return redirect(reverse("reports"))  # Ensure "report" exists in urls.py
-@login_required
 def add_vaccine(request):
     if request.method == 'POST':
         form = VacinneAndMeasureForm(request.POST)
@@ -251,3 +249,107 @@ def add_vaccine(request):
         form = VacinneAndMeasureForm()
 
     return render(request, 'add_vaccine.html', {'form': form,'user':request.user})
+@login_required
+def create_chw(request, phone, role):
+    """
+    Handles approval and creation logic for CHW or Parent based on user role.
+    """
+    # Get the user to approve or return 404
+    user_to_approve = get_object_or_404(Myuser, phone_number=phone, role=role)
+
+    # Check if request method is POST
+    if request.method == 'POST':
+        if  role == 'Chw':
+            form = CHWForm(request.POST)
+        elif role == 'Parent':
+            form = ParentForm(request.POST)
+        else:
+            form = None
+
+        if form and form.is_valid():
+            # Save the form data (CHW or Parent instance)
+            instance = form.save(commit=False)
+            instance.User = user_to_approve  # Link to the approved user
+            instance.save()
+
+            # Create or update approval
+            approval= Approval.objects.create()
+            approval.approves.add(user_to_approve)
+            approval.approvers.add(request.user)
+            approval.comment = f"User approved as {role} successfully."
+            approval.save()
+
+            # Update user status
+            user_to_approve.is_active = True
+            user_to_approve.save()
+
+            # Send notifications
+            Notification.objects.create(
+                user=user_to_approve,
+                message=f"Your account has been approved by {request.user.first_name} {request.user.last_name}."
+            )
+            subject = "Your Account Has Been Approved 🎉"
+            plain_message = (
+                f"Dear {user_to_approve.last_name} {user_to_approve.first_name},\n\n"
+                "We are excited to let you know that your account has been approved.\n"
+                "You can now log in and enjoy all the features available.\n\n"
+                "Thank you for joining us!\n\n"
+                "Best Regards,\n"
+                "Ikibondo Support Team"
+            )
+
+            html_message = f"""
+                <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto;">
+                    <h2 style="color: #007BFF; text-align: center;">{user_to_approve.role} Account Approved 🎉</h2>
+                    <p style="font-size: 16px;">Dear <strong>{user_to_approve.last_name} {user_to_approve.first_name}</strong>,</p>
+                    <p>We are excited to inform you that <strong>your account has been approved!</strong></p>
+                    <p>You can now log in and start using all the amazing features available.</p>
+                    <div style="text-align: center; margin: 20px;">
+                        <a href="https://ikibondo.gov.rw/login" 
+                        style="display: inline-block; padding: 10px 20px; font-size: 16px; 
+                                color: white; background-color: #28a745; text-decoration: none; 
+                                border-radius: 5px;">
+                            Log In Now
+                        </a>
+                    </div>
+                    <p>If you have any questions or need assistance, feel free to <a href="https://ikibondo.gov.rw/contact">contact us</a>.</p>
+                    <p>Thank you for joining us!</p>
+                    <p style="font-size: 14px; color: #777;">Best Regards,<br><strong>Ikibondo support Team</strong></p>
+                </div>
+            """
+
+            send_mail(
+                subject=subject,
+                message=plain_message,
+                from_email='djanaclet@gmail.com',
+                recipient_list=[user_to_approve.email],
+                html_message=html_message,
+            )
+            Notification.objects.create(
+                user=request.user,
+                message=f"You approved {user_to_approve.first_name} {user_to_approve.last_name}'s account as {role}."
+            )
+
+            messages.success(request, f"{role} approved and notifications sent.")
+            return redirect('chw')  # Redirect to the CHW list or success page
+    else:
+        # Render form for GET requests
+        if role == 'Chw':
+            form = CHWForm()
+        elif role == 'Parent':
+            form = ParentForm()
+        else:
+            return redirect(reverse("reports"))  # Redirect invalid roles
+
+        # Pass context for rendering
+        context = {
+            'usertoapprove':user_to_approve,
+            'form': form,
+            'user': request.user,
+            'approve': {
+                'phone': phone,
+                'role': role
+            }
+        }
+        return render(request, 'approve_chw.html', context)
+

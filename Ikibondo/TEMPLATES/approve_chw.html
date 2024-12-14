@@ -82,12 +82,19 @@ Create_chw | Ikibondo
 {%endblock%}
 {%block content%}
 <div class="wrapper">
-    <div class="container box mt-5">
+
+    <div class="container box1 mt-5 shadow-sm">
+    <a href="{% url 'reports' %}" style="text-decoration: none;font-size: 30px;">Go Back<i class="bi bi-skip-backward-fill"></i></a>
+    {% if approve.role == 'Chw'%}
     <h2>Create CHW Profile</h2>
-    <form action="{% url 'approve_user' phone=approve.phone role=approve.role  %}" method="post">
+    {%elif approve.role == 'Parent'%}
+    <h2>Create Parent Profile</h2>
+    {%endif%}
+    <form action="{% url 'approve' phone=approve.phone role=approve.role  %}" method="post">
+      <div class="alert alert-danger">You are approving <b>{{usertoapprove.first_name}} {{usertoapprove.last_name}}</b> , requesting role of <b>{{usertoapprove.role}}</b> </div>
         {% csrf_token %}
         {{ form|crispy }}
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Approve {{approve.role}}</button>
     </form>
 </div>
 </div>

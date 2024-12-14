@@ -76,8 +76,16 @@ class Location(models.Model):
         verbose_name_plural="Locations"
 #checked True
 class Parent(models.Model):
-    user=models.OneToOneField(Myuser,on_delete=models.CASCADE,related_name='parent_profile')
-    NID= models.PositiveIntegerField(primary_key=True)
+    User=models.OneToOneField(Myuser,on_delete=models.CASCADE,related_name='parent_profile')
+    NID= models.PositiveIntegerField(primary_key=True,
+    validators=[
+            RegexValidator(
+                regex=r'^\d{16}$',
+                message="age must be 16 digits long.",
+                code='invalid_ID_value'
+            )
+            ]
+            )
     Location=models.ForeignKey(Location,blank=False,on_delete=models.CASCADE)
     def __str__(self):
         return self.Fullnames
@@ -90,7 +98,7 @@ class Hospital(models.Model):
     LocationId=models.ForeignKey(Location, on_delete=models.CASCADE,related_name='Hospital')
     Names= models.CharField(max_length=100)
     Hospitaltype= models.TextField()
-    Recordeddate=models.IntegerField(null=True)
+    #Recordeddate=models.DateTimeField(default=True)
     def __str__(self):
         return self.Names
 
@@ -105,6 +113,7 @@ class CHW(models.Model):
         return f"{self.User.first_name} {self.User.last_name} ({self.HID})"
 #checked True
 class Device(models.Model):
+    Img=models.ImageField(default='device.png',null=True)
     Name= models.CharField(max_length=100)
     UserGuide= models.TextField()
     Description= models.CharField(max_length=100)
@@ -119,7 +128,7 @@ class Vacinne_and_measure(models.Model):
     Age= models.PositiveIntegerField()
     Dose=models.CharField(max_length=20)
     Details= models.TextField()
-    Recordeddate=models.DateTimeField(auto_created=True)
+    Recordeddate=models.DateTimeField(default=now)
     def __str(self):
         return self.Vacinne_name
 
@@ -156,7 +165,7 @@ class Feedback(models.Model):
     Email= models.EmailField()
     Subject= models.CharField(max_length=100)
     Message= models.TextField()
-    CreatedDate= models.DateTimeField(auto_now=True)
+    CreatedDate= models.DateTimeField(default=now)
     def __str__(self):
         return self.Subject
     class Meta:
@@ -168,18 +177,18 @@ class Update(models.Model):
     New_height= models.PositiveBigIntegerField()
     New_weight= models.PositiveBigIntegerField()
     Description=models.TextField()
-    Date=models.DateField(auto_now=True)
+    Date=models.DateField(default=now)
     def __str__():
         return self.VID
     class Meta:
         verbose_name_plural='Updates'
 #checked out
 class VaccinatedBaby(models.Model):
-    BID= models.ForeignKey(Baby, on_delete=models.CASCADE, related_name='Gives')
+    BID=models.ForeignKey(Baby, on_delete=models.CASCADE, related_name='Gives')
     VID=models.ForeignKey(Vacinne_and_measure,on_delete=models.CASCADE,related_name='VaccinatedBabies')
     HID= models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='Gives')
     Doze=models.TextField()
-    Timetaken=models.TimeField(auto_now=True)
+    Timetaken=models.TimeField(default=now)
     def __str__(self):
         return self.Dose
     class Meta:
@@ -212,7 +221,7 @@ class Approval(models.Model):
     time_created = models.DateTimeField(default=now, help_text="Time approval was created")
 
     def __str__(self):
-        return f"Approval by {', '.join([user.role for user in self.approvers.all()])}: {', '.join([user.first_name for user in self.approvers.all()])}"
+        return f"{', '.join([user.role for user in self.approves.all()])} {', '.join([user.last_name for user in self.approves.all()])} {', '.join([user.first_name for user in self.approves.all()])} Approved by {', '.join([user.role for user in self.approvers.all()])} : {', '.join([user.last_name for user in self.approvers.all()])} {', '.join([user.first_name for user in self.approvers.all()])}"
 
     class Meta:
         verbose_name = "Approval"

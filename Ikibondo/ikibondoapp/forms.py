@@ -21,7 +21,6 @@ class CustomUserCreationForm(UserCreationForm):
         if not phone_number.isdigit() or len(phone_number) != 10:
             raise forms.ValidationError("Phone number must be exactly 10 digits.")
         return phone_number
-
 class Addlocation(forms.ModelForm):
     class Meta:
         model = Location
@@ -33,21 +32,14 @@ class Addlocation(forms.ModelForm):
     District = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter district'}))
     Village = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter village'}))
     Streetcode = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter streetcode (optional)'}))
-
 class CHWForm(forms.ModelForm):
     class Meta:
         model = CHW
-        fields = ['User', 'LocationId', 'HID']  # Include only the fields you want
+        fields = ['LocationId', 'HID']  # Include only the fields you want
         widgets = {
-            'User': forms.Select(attrs={'class': 'form-control'}),
             'LocationId': forms.Select(attrs={'class': 'form-control'}),
             'HID': forms.Select(attrs={'class': 'form-control'}),
         }
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Filter the User field to only include users with role='chw' and is_active=False
-        self.fields['User'].queryset = Myuser.objects.filter(role='chw', is_active=False)
-
 class VacinneAndMeasureForm(forms.ModelForm):
     class Meta:
         model = Vacinne_and_measure
@@ -58,3 +50,7 @@ class VacinneAndMeasureForm(forms.ModelForm):
             'Age': forms.NumberInput(attrs={'placeholder': 'Recommended Age'}),
             'Dose': forms.TextInput(attrs={'placeholder': 'Dosage (e.g., 1st Dose, Booster, etc.)'}),
         }
+class ParentForm(forms.ModelForm):
+    class Meta:
+        model = Parent
+        fields = ['NID', 'Location']

@@ -76,11 +76,11 @@ Notifiaction | Ikibondo
             <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
             <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
           </svg> Logout</button>
-          <div class="modal fade" id="examplemodal" tabindex="-1" aria-labelledby="examplemodallabel" aria-hidden="true">
+          <div class="modal fade" id="logoutme" tabindex="-1" aria-labelledby="logout" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="examplemodallabel">
+                    <h1 class="modal-title fs-5" id="logout">
                       Are you sure you want to logout?
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
@@ -101,22 +101,123 @@ Notifiaction | Ikibondo
 {%block content%}
 <div class="wrapper">
   <div class="box1">
-<h2>Your Notifications</h2>
-    <ul>
-        {% for notification in notifications %}
-        <li>
-            <strong>{{ notification.timestamp }}</strong>: {{ notification.message }}
-            {% if not notification.is_read %}
-            <span style="color: red;">(Unread)</span>
-            {% endif %}
-        </li>
-        {% empty %}
-         <div class="h2" style="color: slategray;">
-          <center> You have no notification yet!!!</center>
-         </div> 
-          
-        {% endfor %}
-    </ul>
+      <h4>Most Active Account Types</h4>
+      <div class="chart"></div> <!-- Placeholder for the chart -->
   </div>
+  <div class="box1">
+      <h4>Service Delivery Rate</h4>
+      <div class="chart">
+          78%
+      </div>
   </div>
+  <div class="box1">
+      <h4>Babies in Red Zone</h4>
+      <!-- Pie chart here -->
+      <div class="chart"></div>
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="box1">
+    <div class="notifications-container ">
+      <h3 class="text-center fw-bold">Notifications list</h3>
+    
+      <div class="actions hstack">
+          <button type="submit" class="btn bg-light shadow-sm p-2 hov ">Make all as read</button>
+          <!-- Button trigger modal -->
+          <button type="button" class="ms-auto btn shadow-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Create notice ☺
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="notifyme" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="notifyme">Send notification to other users!</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form action="{% url 'notification' %}" method="post" style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                    {% csrf_token %}
+                    <center>
+                        <b style="font-size: 24px; color: #333;">Notice Creation</b>
+                    </center>
+                    <div style="margin-bottom: 15px;">
+                        <label for="Receiver" style="font-weight: bold; color: #555; display: block; margin-bottom: 5px;">Receiver:</label>
+                        <select id="Receiver" name="receiver" required style="padding: 10px; border-radius: 4px; border: 1px solid #ccc; width: 100%; box-sizing: border-box;">
+                            <option value="">Select a User</option>
+                            <option value="All">All users</option>
+                            <option value="Superadmin">All Admins</option>
+                            <option value="Chw">All CHWs</option>
+                            <option value="Parent">All Parents</option>
+                            {% for user in users %}
+                                <option value="{{ user.phone_number }}">{{ user }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                
+                    <div style="margin-bottom: 15px;">
+                        <label for="title" style="font-weight: bold; color: #555; display: block; margin-bottom: 5px;">Title:</label>
+                        <input type="text" name="title" placeholder="Enter notification title" style="padding: 10px; border-radius: 4px; border: 1px solid #ccc; width: 100%; box-sizing: border-box;">
+                    </div>
+                
+                    <div style="margin-bottom: 15px;">
+                        <label for="link" style="font-weight: bold; color: #555; display: block; margin-bottom: 5px;">Link (optional):</label>
+                        <input type="text" name="link" style="padding: 10px; border-radius: 4px; border: 1px solid #ccc; width: 100%; box-sizing: border-box;">
+                    </div>
+                
+                    <div style="margin-bottom: 15px;">
+                        <label for="message" style="font-weight: bold; color: #555; display: block; margin-bottom: 5px;">Message:</label>
+                        <textarea name="message" cols="30" rows="5" placeholder="Enter message you want to notify" style="padding: 10px; border-radius: 4px; border: 1px solid #ccc; width: 100%; box-sizing: border-box;"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                    
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Notify</button>
+                  </div>
+                </form>
+                
+                </div>
+                
+              </div>
+            </div>
+          </div>
+      </div>
+    <hr class="px-0 mx-0" style="margin-inline:0 ; padding-inline: 0;">
+      {% for notification in notifications %}
+          <div class="notification-item hstack">
+              <p>
+                  <strong style="color: red;">&lt;system notice&gt;</strong> {{ notification.timestamp }} <br>
+                  {{ notification.message }}
+              </p>
+              <p class=" ms-auto notification-actions">
+                {% if notification.is_read %}
+                    <button class="btn fw-bold">Make as unread</button>
+                {% else %}
+                    <button class=" btn fw-bold">Make as read</button>
+                {% endif %}
+              </p>
+          </div>
+      {% empty %}
+          <p>No notifications available.</p>
+      {% endfor %}
+    
+      <!-- Pagination -->
+      <div class="pagination d-flex align-items-center">
+          {% if notifications.has_previous %}
+              <a href="?page=1">&laquo; First</a>
+              <a href="?page={{ notifications.previous_page_number }}">Previous</a>
+          {% endif %}
+    
+          Page {{ notifications.number }} of {{ notifications.paginator.num_pages }}
+    
+          {% if notifications.has_next %}
+              <a href="?page={{ notifications.next_page_number }}">Next</a>
+              <a href="?page={{ notifications.paginator.num_pages }}">Last &raquo;</a>
+          {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
 {%endblock%}

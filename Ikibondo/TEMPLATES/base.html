@@ -67,6 +67,8 @@
         }
         .hovs:hover{
         background-color: #C1C7CD;
+        /* background-color: #f8f9fa; Light background on hover */
+        cursor: pointer;
         }
         .wrapper{
             display: grid;
@@ -100,6 +102,46 @@
             grid-template-rows: subgrid;
             grid-row:span 3;
         }
+        .notifications-container {
+            padding: 0px;
+            margin: 0;
+            background-color: #fff;
+        }
+
+        .notification-item {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+        }
+
+        .notification-actions button {
+            background-color:#fff;
+            color: #000;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            box-shadow: #000 10px;
+            font-weight: bold;
+        }
+
+        .notification-actions button:hover {
+            background-color: #0056b3;
+        }
+
+        .actions button {
+            margin-right: 10px;
+        }
+
+        .pagination a {
+            margin: 0 5px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        .pagination a:hover {
+            text-decoration: underline;
+        }
+
     </style>
 </head>
 <body class="overflow-x-hidden">

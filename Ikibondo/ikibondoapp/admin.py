@@ -36,7 +36,7 @@ class ApprovalAdmin(admin.ModelAdmin):
 
     get_approvers.short_description = "Approvers"
     get_approves.short_description = "Approved Users"
-
+admin.site.register(Notification)
 admin.site.register(Parent)
 admin.site.register(CHW)
 admin.site.register(Device)

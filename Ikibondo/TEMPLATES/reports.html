@@ -157,60 +157,11 @@ Ikibondo-Report
              <div class="wrapper">
               <div class="box1">
                 <h3><b>List of all approved user today</b></h3>
-                <div class="table-responsive ">
-                  <table class="table table-striped table-hover ">
-                      <thead class="table-light">
-                          <th scope="col">#</th>
-                          <th scope="col">NID</th>
-                          <th scope="col">Fullnames</th>
-                          <th scope="col">Phone</th>
-                          <th scope="col">Role</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Gender</th>
-                          <th scope="col">Edit</th>
-                          <th scope="col">Deactivate</th>
-                      </thead>
-                      <tbody id="userTableBody">
-                        {% for users in userss %}
-                        <tr>
-                          <td>{{ forloop.counter }}</td>
-                          <td>{{ user.nid }}</td>
-                          <td>{{ users.first_name }} {{ users.last_name }}</td>
-                          <td>{{ users.phone_number }}</td>
-                          <td>{{ users.role }}</td>
-                          <td>
-                            {%if users.is_active %}
-                            <span class="badge bg-success">Active</span>
-                            {%else%}
-                            <span class="badge bg-danger">Inactive</span>
-                            {%endif%}
-                          </td>
-                          <td>{{ users.gender }}</td>
-                          <td>
-                            <a href="{% url 'approve_user' phone=users.phone_number role=users.role %}">
-                            <button
-                              class="btn btn-md btn-warning editButton"
-                              data-bs-toggle="modal"
-                              data-bs-target="#editUserModal"
-                            >
-                              <i class="bi bi-pencil"></i>
-                            </button>
-                          </a>
-                          </td>
-                          <td>
-                            <button class="btn btn-md btn-danger deleteButton">
-                              <i class="bi bi-trash"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                          <td colspan="10" class="text-center">No users found</td>
-                        </tr>
-                        {% endfor %}
-                      </tbody>
-                   </table>
-                </div>
+                {% for i in userapproved%}
+                <div class="alert alert-success">{{i}}</div>
+                {% empty %}
+                <div class="alert alert-danger">No approved user today</div>
+                {%endfor%}
               </div>
               <div class="box1">
                 <h3><b>List of CHW waiting for approval</b></h3>
@@ -224,11 +175,12 @@ Ikibondo-Report
                           <th scope="col">Role</th>
                           <th scope="col">Status</th>
                           <th scope="col">Gender</th>
+                          <th scope="col">Approve user</th>
                           <th scope="col">Edit</th>
                           <th scope="col">Deactivate</th>
                       </thead>
                       <tbody id="userTableBody">
-                        {% for users in usersschw %}
+                        {% for users in userchw %}
                         <tr>
                           <td>{{ forloop.counter }}</td>
                           <td>{{ user.nid }}</td>
@@ -244,7 +196,17 @@ Ikibondo-Report
                           </td>
                           <td>{{ users.gender }}</td>
                           <td>
-                            <a href="{% url 'approve_user' phone=users.phone_number role=users.role %}">
+                            <a href="{% url 'approve' phone=users.phone_number role=users.role %}">
+                              <button
+                              class="btn btn-md btn-success editButton"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editUserModal"
+                              >
+                              <i class="bi bi-bookmark-check-fill"></i>
+                            </button>
+                            </a>
+                          <td>
+                            <a href="{% url 'userdetail' phone=users.phone_number%}">
                             <button
                               class="btn btn-md btn-warning editButton"
                               data-bs-toggle="modal"
@@ -252,7 +214,7 @@ Ikibondo-Report
                             >
                               <i class="bi bi-pencil"></i>
                             </button>
-                          </a>
+                            </a>
                           </td>
                           <td>
                             <button class="btn btn-md btn-danger deleteButton">
@@ -283,6 +245,7 @@ Ikibondo-Report
                           <th scope="col">Role</th>
                           <th scope="col">Status</th>
                           <th scope="col">Gender</th>
+                          <th scope="col">Approve user</th>
                           <th scope="col">Edit</th>
                           <th scope="col">Deactivate</th>
                       </thead>
@@ -303,7 +266,16 @@ Ikibondo-Report
                           </td>
                           <td>{{ users.gender }}</td>
                           <td>
-                            <a href="{% url 'approve_user' phone=users.phone_number role=users.role %}">
+                            <a href="{% url 'approve' phone=users.phone_number role=users.role %}">
+                              <button
+                              class="btn btn-md btn-success editButton"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editUserModal"
+                              >
+                              <i class="bi bi-bookmark-check-fill"></i>
+                            </button>
+                          <td>
+                            <a href="{% url 'userdetail' phone=users.phone_number%}">
                             <button
                               class="btn btn-md btn-warning editButton"
                               data-bs-toggle="modal"
@@ -360,7 +332,7 @@ Ikibondo-Report
                           </td>
                           <td>{{ users.gender }}</td>
                           <td>
-                            <a href="{% url 'approve_user' phone=users.phone_number role=users.role %}">
+                            <a href="{% url 'userdetail' phone=users.phone_number%}">
                             <button
                               class="btn btn-md btn-warning editButton"
                               data-bs-toggle="modal"
@@ -386,4 +358,4 @@ Ikibondo-Report
                 </div>
               </div>
              </div>
-             {%endblock%}
+{%endblock%}
