@@ -23,7 +23,8 @@ urlpatterns=[
     path('vaccine',vandm_view,name='vaccine'),
     path('reports',report_view,name='reports'),
     path('admins',admin_view,name='admins'),
-    path('babies',babies,name='babies'),
+    path('babies/<str:phone>/',babies,name='babies'),
+    path('babies/',babies_view,name='babies'),
     path('hospitals',hospital_view,name='hospitals'),
     #path(r'^(?P<phone_number>[\w])/$',userdetail),
     path('<str:phone>',userdetail,name='userdetail'),
@@ -37,5 +38,5 @@ urlpatterns=[
     path('add_vaccine/',add_vaccine,name='add_vaccine'),
 ]
 
-urlpatterns+= staticfiles_urlpatterns()
-urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

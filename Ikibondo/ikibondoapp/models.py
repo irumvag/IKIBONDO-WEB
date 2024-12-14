@@ -86,7 +86,7 @@ class Parent(models.Model):
             )
             ]
             )
-    Location=models.ForeignKey(Location,blank=False,on_delete=models.CASCADE)
+    Location=models.ForeignKey(Location,blank=False,on_delete=models.CASCADE,related_name='location')
     def __str__(self):
         return self.Fullnames
     class Meta:
@@ -98,7 +98,6 @@ class Hospital(models.Model):
     LocationId=models.ForeignKey(Location, on_delete=models.CASCADE,related_name='Hospital')
     Names= models.CharField(max_length=100)
     Hospitaltype= models.TextField()
-    #Recordeddate=models.DateTimeField(default=True)
     def __str__(self):
         return self.Names
 
@@ -113,11 +112,12 @@ class CHW(models.Model):
         return f"{self.User.first_name} {self.User.last_name} ({self.HID})"
 #checked True
 class Device(models.Model):
-    Img=models.ImageField(default='device.png',null=True)
     Name= models.CharField(max_length=100)
     UserGuide= models.TextField()
-    Description= models.CharField(max_length=100)
+    Description= models.TextField()
     SerialNumber= models.PositiveBigIntegerField()
+    Img=models.ImageField(default='device.png',null=True)
+
     def __str__(self):
         return self.Name
     

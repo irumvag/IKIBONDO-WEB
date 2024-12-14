@@ -283,15 +283,22 @@
         <th scope="col">Status</th>
       </thead>
       <tr>
-        <td scope="row">IOT 12
-          <img src="" alt="" width="87" height="121">
+        {% for d in devices %}
+        <td scope="row">{{d.Name}}
+          <img src="{{d.Img}}" alt="" width="87" height="121">
         </td>
-        <td>S12322342342</td>
-        <td ><center>IOT Device is in charge of controlling and reporting the usage of the other devices deployed to give service to the other devices in case other device need communication it can be used to  link more than one device together to provide connectivity.</center></td>
-        <td>User guide can be found on this link click here</td>
+        <td>{{d.SerialNumber}}</td>
+        <td>{{d.Description}}</td>
+        <td ><center>{{d.UserGuide}}</center></td>
+        
         <td>Location list can be found here on this link</td>
         <td>Active in  five minute later</td>
       </tr>
+        {% empty%}
+        <tr>
+          <P>No device found</P>
+        </tr>
+        {%endfor%}
     </table>
   </div>
 </div> 

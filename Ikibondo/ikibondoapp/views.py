@@ -114,7 +114,8 @@ total={
 def useradmin(request):
     user=request.user
     myusers=Myuser.objects.filter(role='Chw').order_by('-date_joined')
-    return render(request,'admindashboard.html',{'user':user,'totals':total,'userchws':myusers})
+    device=Device.objects.all()
+    return render(request,'admindashboard.html',{'user':user,'totals':total,'userchws':myusers,'devices':device})
 @login_required(login_url='/login/')
 def adminfeedback(request):
     user=request.user
@@ -173,10 +174,13 @@ def notification_view(request):
     page_number = request.GET.get('page')
     notifications = paginator.get_page(page_number)
     return render(request, 'notifications.html', {'notifications': notifications,'users':users})
-
+@login_required
+def babies_view(request):
+    return render(request,'baby.html')
 @login_required
 def pandb_view(request):
-    return render(request,'parentsandbaby.html')  
+    parents=Myuser.objects.filter(role="Parent")
+    return render(request,'parentsandbaby.html',{'parents':parents,'totalparent':returnsum(Parent)})  
 @login_required  
 def vandm_view(request):
     return render(request,'vaccineandmeasure.html')
@@ -193,7 +197,7 @@ def admin_view(request):
     myusers=Myuser.objects.filter(role='Superadmin' or 'Nurse').order_by('-date_joined')
     return render(request,'admins.html',{'userss':myusers,'totals':total,'user':user})
 @login_required
-def babies(request):
+def babies(request,phone):
     return render(request,'babies.html') 
 @login_required
 def addchw(request):
