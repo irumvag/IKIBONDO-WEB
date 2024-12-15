@@ -27,7 +27,7 @@ urlpatterns=[
     path('babies/',babies_view,name='babies'),
     path('hospitals',hospital_view,name='hospitals'),
     #path(r'^(?P<phone_number>[\w])/$',userdetail),
-    path('<str:phone>',userdetail,name='userdetail'),
+    path('userdetail/<str:phone>/',userdetail,name='userdetail'),
     #reset password url
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),

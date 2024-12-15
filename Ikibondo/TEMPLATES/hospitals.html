@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {%block title %}
 Ikibondo-Hospitals
 {%endblock%}
@@ -123,9 +124,42 @@ Ikibondo-Hospitals
              <div class="row gx-2 card  mt-2">
                 <div class="card-body">
                <div class="hstack">
-                <a href="{% url 'hospitals' %}" style="text-decoration: none;color: #000;">
-                  <h3 class="p-2" style="color:green;font-weight: bold;">Add new hospital to platform <i class="bi bi-node-plus" style="color:#4285F4;"></i></h3>
-                </a>
+                <button 
+                type="button" 
+                class="btn" 
+                data-bs-toggle="modal" 
+                data-bs-target="#hospitalModal" 
+                style="text-decoration: none; color: #000;">
+                <h3 class="p-2" style="color: green; font-weight: bold;">
+                  Add new hospital to platform 
+                  <i class="bi bi-node-plus" style="color: #4285F4;"></i>
+                </h3>
+              </button>
+              
+              <!-- Modal -->
+              <div class="modal fade" id="hospitalModal" tabindex="-1" aria-labelledby="hospitalsLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="hospitalsLabel">Add Hospital to Database</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="{% url 'hospitals' %}" method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          <button type="submit" class="btn btn-primary">Add Hospital</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+                  
+                
                 <form class="form-control ms-auto p-0 w-50">
                     <div class="input-group">
                       <span class="input-group-text" id="basic-addon1"><button type="button" class="border-0 bg-light">

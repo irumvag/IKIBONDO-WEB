@@ -2,6 +2,17 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
 
+class HospitalForm(forms.ModelForm):
+    class Meta:
+        model = Hospital
+        fields = ['HID', 'LocationId', 'Names', 'Hospitaltype']
+
+    # You can add custom validation or widget configurations if needed
+    HID = forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter Hospital ID'})
+    LocationId = forms.ModelChoiceField(queryset=Location.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
+    Names = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Hospital Name'}))
+    Hospitaltype = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter Hospital Type'}))
+
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = Myuser
@@ -24,9 +35,9 @@ class CustomUserCreationForm(UserCreationForm):
 class Addlocation(forms.ModelForm):
     class Meta:
         model = Location
-        fields = ['LocationId', 'Country', 'Provence', 'District', 'Village', 'Streetcode']
+        fields = ['Country', 'Provence', 'District', 'Village', 'Streetcode']
 
-    LocationId = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter Location ID'}))
+    #LocationId = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter Location ID'}))
     Country = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter country'}))
     Provence = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter province'}))
     District = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter district'}))

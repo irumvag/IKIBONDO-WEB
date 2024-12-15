@@ -141,7 +141,10 @@
         .pagination a:hover {
             text-decoration: underline;
         }
-
+        .rowh:hover{
+          border: #306CFE solid 1px;
+          box-shadow: 1px #306CFE;
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -218,7 +221,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                  <a class="nav-link active pt-3 fw-bold" aria-current="page" href="#" style="color: #001D6C;">Overview</a>
+                  <a class="nav-link active pt-3 fw-bold" aria-current="page" href="{% url 'useradmin'%}" style="color: #001D6C;">Overview</a>
                   {%if user.role == 'Superadmin' or user.role == 'Nurse'%}
                   <div> <a class="nav-link pt-3" style="color: #001D6C;" href="{% url 'admins'%}">Admins</a></div>
                   <div> <a class="nav-link pt-3" style="color: #001D6C;" href="{% url 'chw'%}">CHW</a></div>

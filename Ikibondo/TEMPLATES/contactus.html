@@ -80,13 +80,27 @@
                     <div class="row">
                         <input type="text" placeholder="Subject" name="Subject" id=""class="mt-4 border-0 col-12 p-3 rounded bg-light" required>
                     </div>
-                    <div class="row position-relative">
-                        <p class="position-absolute mt-3 "><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
-                            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
-                          </svg>  Message</p>
-                        <p><textarea name="message" id="message" cols="30" rows="10" class="bg-light border-0 rounded mt-3 col-12 ps-1" required>     
-                        </textarea></p>
-                    </div>
+                    <div class="row position-relative mb-4">
+                      <!-- Label with Icon -->
+                      <p class="position-absolute top-0 start-0 mt-3 d-flex align-items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-envelope me-2 text-primary" viewBox="0 0 16 16">
+                              <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z" />
+                          </svg>
+                          <span>Message</span>
+                      </p>
+                  
+                      <!-- Textarea -->
+                      <p class="w-100 p-0 m-0">
+                          <textarea 
+                              name="message" 
+                              id="message" 
+                              class="form-control bg-light border rounded mt-5 ps-3 shadow-sm" 
+                              rows="6" 
+                              placeholder="Write your message here..." 
+                              required
+                          ></textarea>
+                      </p>
+                  </div>                  
                     <div class="row d-flex justify-content-md-center">
                         <div class="d-flex justify-content-md-center justify-content-center">
                         <button type="button" class="btn btn-success text-white px-5 mt-4 p-2" data-bs-toggle="modal" data-bs-target="#examplemodal">Submit</button>

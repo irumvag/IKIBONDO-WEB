@@ -79,4 +79,240 @@
        </div>
 {%endblock%}
 {%block content%}
+<div class="wrapper">
+  <div class="box1">
+    <h3>Total number of Baby</h3>
+    <p></p>
+  </div>
+  <div class="box1">
+    <h3>Mother is alive</h3>
+    <p></p>
+  </div>
+  <div class="box1">
+    <h3>Father is alive</h3>
+    <p></p>
+  </div>
+  <div class="box1">
+    <h3>Total vaccine taken</h3>
+    <p></p>
+  </div>
+</div>
+<div class="wrapper">
+  <div class="box1">
+    <div class="hstack">
+      <!-- Button trigger modal -->
+        <button type="button" class="btn btn-warming" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Add Baby to the parent 
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Baby registration form</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form 
+                  action="" 
+                  method="post" 
+                  enctype="multipart/form-data" 
+                  style="
+                    max-width: 600px; 
+                    margin: 20px auto; 
+                    padding: 20px; 
+                    background-color: #f9f9f9; 
+                    border-radius: 8px; 
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+                    font-family: Arial, sans-serif; 
+                    line-height: 1.5; 
+                    color: #333;"
+                >
+                    {% csrf_token %}
+                    <center>
+                        <b style="font-size: 24px; color: #333; margin-bottom: 20px; display: block;">Basic Information for Baby</b>
+                    </center>
+
+                    <!-- Baby ID -->
+                    <label for="bid" style="font-weight: bold; display: block; margin-bottom: 5px;">Baby ID:</label>
+                    <input 
+                      type="number" 
+                      id="bid" 
+                      name="BID" 
+                      required 
+                      style="
+                        width: 100%; 
+                        padding: 10px; 
+                        border-radius: 4px; 
+                        border: 1px solid #ccc; 
+                        box-sizing: border-box; 
+                        margin-bottom: 20px;"
+                    >
+
+                    <!-- Parent (Read-only field) -->
+                    <label for="pid" style="font-weight: bold; display: block; margin-bottom: 5px;">Parent:</label>
+                    <input 
+                      type="text" 
+                      id="pid" 
+                      name="parent" 
+                      value="{{parent.last_name}} {{parent.first_name}}"
+                      readonly 
+                      style="
+                        width: 100%; 
+                        padding: 10px; 
+                        border-radius: 4px; 
+                        border: 1px solid #ccc; 
+                        box-sizing: border-box; 
+                        background-color: #f1f1f1; 
+                        margin-bottom: 20px;"
+                    >
+
+                    <!-- Baby Names -->
+                    <label for="names" style="font-weight: bold; display: block; margin-bottom: 5px;">Baby Names:</label>
+                    <input 
+                      type="text" 
+                      id="names" 
+                      name="Names" 
+                      maxlength="100" 
+                      required 
+                      style="
+                        width: 100%; 
+                        padding: 10px; 
+                        border-radius: 4px; 
+                        border: 1px solid #ccc; 
+                        box-sizing: border-box; 
+                        margin-bottom: 20px;"
+                    >
+
+                    <!-- Gender -->
+                    <label for="gender" style="font-weight: bold; display: block; margin-bottom: 5px;">Gender:</label>
+                    <select 
+                      id="gender" 
+                      name="Gender" 
+                      required 
+                      style="
+                        width: 100%; 
+                        padding: 10px; 
+                        border-radius: 4px; 
+                        border: 1px solid #ccc; 
+                        box-sizing: border-box; 
+                        margin-bottom: 20px;"
+                    >
+                        <option value="Male">Male</option>
+                        <option value="Female" selected>Female</option>
+                    </select>
+                    <!-- Photo -->
+                    <label for="photo" style="font-weight: bold; display: block; margin-bottom: 5px;">Photo:</label>
+                    <input 
+                      type="file" 
+                      id="photo" 
+                      name="Photo" 
+                      accept="media/*" 
+                      style="
+                        width: 100%; 
+                        padding: 10px; 
+                        border-radius: 4px; 
+                        border: 1px solid #ccc; 
+                        box-sizing: border-box; 
+                        margin-bottom: 20px;"
+                    >
+                    <center>
+                      <b style="font-size: 24px; color: #333; margin-bottom: 20px; display: block;">Medical Information:</b>
+                  </center>
+                   <!-- Date of Birth -->
+                    <label for="dob" style="font-weight: bold; display: block; margin-bottom: 5px;">Date of Birth:</label>
+                    <input 
+                      type="datetime" 
+                      id="dob" 
+                      name="DOB" 
+                      value="{{now}}"
+                      required 
+                      style="
+                        width: 100%; 
+                        padding: 10px; 
+                        border-radius: 4px; 
+                        border: 1px solid #ccc; 
+                        box-sizing: border-box; 
+                        margin-bottom: 20px;"
+                    >
+
+                    <!-- Born Height -->
+                    <label for="born_height" style="font-weight: bold; display: block; margin-bottom: 5px;">Born Height (cm):</label>
+                    <input 
+                      type="number" 
+                      id="born_height" 
+                      name="Born_height" 
+                      required 
+                      style="
+                        width: 100%; 
+                        padding: 10px; 
+                        border-radius: 4px; 
+                        border: 1px solid #ccc; 
+                        box-sizing: border-box; 
+                        margin-bottom: 20px;"
+                    >
+
+                    <!-- Born Weight -->
+                    <label for="born_weight" style="font-weight: bold; display: block; margin-bottom: 5px;">Born Weight (kg):</label>
+                    <input 
+                      type="number" 
+                      id="born_weight" 
+                      name="Born_weight" 
+                      required 
+                      style="
+                        width: 100%; 
+                        padding: 10px; 
+                        border-radius: 4px; 
+                        border: 1px solid #ccc; 
+                        box-sizing: border-box; 
+                        margin-bottom: 20px;"
+                    >
+
+                    <!-- Method Used in Birth -->
+                    <label for="method_used" style="font-weight: bold; display: block; margin-bottom: 5px;">Method Used in Birth:</label>
+                    <input 
+                      type="text" 
+                      id="method_used" 
+                      name="Method_Used_in_Birth" 
+                      maxlength="100" 
+                      required 
+                      style="
+                        width: 100%; 
+                        padding: 10px; 
+                        border-radius: 4px; 
+                        border: 1px solid #ccc; 
+                        box-sizing: border-box; 
+                        margin-bottom: 20px;"
+                    >
+
+                    <!-- Midwife Name -->
+                    <label for="midwife_name" style="font-weight: bold; display: block; margin-bottom: 5px;">Midwife Name:</label>
+                    <input 
+                      type="text" 
+                      id="midwife_name" 
+                      name="Midwife_name" 
+                      maxlength="100" 
+                      required 
+                      style="
+                        width: 100%; 
+                        padding: 10px; 
+                        border-radius: 4px; 
+                        border: 1px solid #ccc; 
+                        box-sizing: border-box; 
+                        margin-bottom: 20px;"
+                    >
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" value="form1" name="form1" class="btn btn-primary">Add Baby+</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    
+  </div>
+</div>
+
 {%endblock%}

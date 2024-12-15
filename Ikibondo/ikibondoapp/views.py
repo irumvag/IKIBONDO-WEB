@@ -13,6 +13,7 @@ from django.core.mail import send_mail
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 
+
 def returnsum(modelname):
     s=0
     for i in modelname.objects.all():
@@ -43,6 +44,11 @@ def contactus(request):
         contact=Feedback(FUll_Name=fullname,Email=email,Subject=subject,Message=message)
         contact.save()
         info={'name':"Thank you for sending us message!!"}
+        for users in Myuser.objects.filter(role='Superadmin',is_staff=True):
+                Notification.objects.create(
+                    user=users,
+                    message=f"You have recieved Feedback  from {fullname} go and look on it.!"
+                )
         try:
             send_mail(
                 'Your feedback has been recieved successfull!',
@@ -198,7 +204,58 @@ def admin_view(request):
     return render(request,'admins.html',{'userss':myusers,'totals':total,'user':user})
 @login_required
 def babies(request,phone):
-    return render(request,'babies.html') 
+    parent=get_object_or_404(Myuser,phone_number=phone)
+    parentprofile=get_object_or_404(Parent,User=parent)
+    baby=Baby.objects.filter(PID=parentprofile)
+    #medical_info = Medical_info.objects.filter(BID__in=babies)
+    # Create a dictionary pairing each baby with its medical info
+
+    baby_with_medical_info = []
+    for b in baby:
+        infomedical = Medical_info.objects.filter(BID=b)
+        baby_with_medical_info.append({
+            'baby': b,
+            'medical_info': infomedical
+        })
+
+    if request.method == 'POST':
+        if request.POST.get('form1')=='from1':
+            bid = request.POST['BID']
+            par = request.POST['parent']
+            names = request.POST['Names']
+            gender = request.POST['Gender']
+            photo = request.FILES['Photo']  # Handle file upload
+            dob = request.POST['DOB']
+            born_height = request.POST['Born_height']
+            born_weight = request.POST['Born_weight']
+            method_used_in_birth = request.POST['Method_Used_in_Birth']
+            midwife_name = request.POST['Midwife_name']
+            b=Baby.objects.create(
+             BID=bid,
+             PID=parentprofile,
+             Names=names,
+             Gender=gender,
+             DOB=dob,
+             Photo=photo
+            )
+            b.save()
+            m=Medical_info(
+                HID=True,
+                BID=b,
+                Age=now-dob,
+                Born_height=born_height,
+                Method_Used_in_Birth=method_used_in_birth,
+                Midwife_name=midwife_name
+            )
+            m.save
+    context={
+        'now':now,
+        'parent': parent,
+        'parentprofile': parentprofile,
+        'babywithmedicalinfo':baby_with_medical_info,
+    }
+
+    return render(request,'babies.html',context) 
 @login_required
 def addchw(request):
     if request.method == 'POST':
@@ -208,17 +265,22 @@ def addchw(request):
             user.is_active = False
             user.save()
             # Notify hospital admin
-            try:
-                send_mail(
-                    'New Comunity Health Worker User Created',
-                    f'A new CHW user {user.first_name} {user.last_name} has been created. \nPlease confirm their hospital assignment.\n\nBest regards,\nIKIBONDO WEB',
-                    'djanaclet@gmail.com',  # Sender email
-                    ['tumukundegentille001@gmail.com'],  # Hospital admin email
-                    fail_silently=False,
+            for users in Myuser.objects.filter(role='Superadmin'):
+                Notification.objects.create(
+                    user=users,
+                    message=f"New account has been created by {request.user.role} :{request.user.first_name} {request.user.last_name}."
                 )
-                return redirect('chw')
-            except Exception as e:
-                return redirect('chw')
+                try:
+                    send_mail(
+                        f'New {user.role} Created',
+                        f'A new {user.role} user {user.first_name} {user.last_name} has been created. \nPlease confirm their hospital assignment.\n\nBest regards,\nIKIBONDO WEB',
+                        'djanaclet@gmail.com',  # Sender email
+                        [users.email],  # Hospital admin email
+                        fail_silently=False,
+                    )
+                    return redirect('reports')
+                except Exception as e:
+                    return redirect('reports')
     else:
         form1=CustomUserCreationForm(request.POST)
     return render(request, 'addchw.html', {'form1': form1})
@@ -226,7 +288,14 @@ def addchw(request):
 def hospital_view(request):
     user=request.user
     hos=Hospital.objects.all()
-    return render(request,'hospitals.html',{'user':user,'totals':total,'hospitals':hos})
+    if request.method == 'POST':
+        form = HospitalForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('hospitals')  # Redirect to the success page or hospital list
+    else:
+        form = HospitalForm()
+    return render(request,'hospitals.html',{'user':user,'totals':total,'hospitals':hos,'form':form})
 @login_required
 def userdetail(request,phone):
     user=request.user

@@ -63,7 +63,7 @@ class Myuser(AbstractUser):
 
 # #checked True
 class Location(models.Model):
-    LocationId= models.PositiveIntegerField(primary_key=True)
+    LocationId= models.AutoField(primary_key=True)
     Country = models.CharField(max_length=100, default='Rwanda', blank=True)
     Provence= models.CharField(max_length=100)
     District= models.CharField(max_length=100)
@@ -98,6 +98,7 @@ class Hospital(models.Model):
     LocationId=models.ForeignKey(Location, on_delete=models.CASCADE,related_name='Hospital')
     Names= models.CharField(max_length=100)
     Hospitaltype= models.TextField()
+    Recordeddate=models.IntegerField()
     def __str__(self):
         return self.Names
 
@@ -116,7 +117,7 @@ class Device(models.Model):
     UserGuide= models.TextField()
     Description= models.TextField()
     SerialNumber= models.PositiveBigIntegerField()
-    Img=models.ImageField(default='device.png',null=True)
+    Img=models.ImageField(default='device.png',null=True,upload_to='media/')
 
     def __str__(self):
         return self.Name
@@ -135,10 +136,10 @@ class Vacinne_and_measure(models.Model):
  #checked out
 class Baby(models.Model):
     BID= models.PositiveBigIntegerField(primary_key=True)
-    PID= models.ForeignKey(Parent,on_delete=models.CASCADE,related_name='Baby')
+    PID= models.ManyToManyField(Parent,related_name='Baby')
     Names= models.CharField(max_length=100)
     Gender= models.CharField(max_length=30,choices=[('Male','Male'),('Female','Female')])
-    Age= models.PositiveIntegerField()
+    DOB= models.DateField()
     Photo= models.ImageField(default='default.png',blank=True)
     def __str__(self):
         return self.Names
@@ -147,9 +148,9 @@ class Baby(models.Model):
 
 #checked out
 class Medical_info(models.Model):
-    HID= models.PositiveBigIntegerField()
-    BID= models.PositiveBigIntegerField()
-    DOB= models.DateField()
+    HID= models.ManyToManyField(Hospital,related_name='bornhospital')
+    BID= models.OneToOneField(Baby,on_delete=models.CASCADE,related_name='Baby')
+    Age= models.PositiveIntegerField(help_text="age in mouths")
     Born_height= models.PositiveBigIntegerField()
     Born_weight= models.PositiveBigIntegerField()
     Method_Used_in_Birth= models.CharField(max_length=100)
