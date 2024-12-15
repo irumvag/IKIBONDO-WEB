@@ -219,7 +219,7 @@ def babies(request,phone):
         })
 
     if request.method == 'POST':
-        if request.POST.get('form1')=='from1':
+        if request.POST.get('form1')=='form1':
             bid = request.POST['BID']
             par = request.POST['parent']
             names = request.POST['Names']
@@ -247,7 +247,9 @@ def babies(request,phone):
                 Method_Used_in_Birth=method_used_in_birth,
                 Midwife_name=midwife_name
             )
-            m.save
+            m.save()
+            info="Baby added sucessful"
+            return render(request,'babies.html',{'info':info})
     context={
         'now':now,
         'parent': parent,

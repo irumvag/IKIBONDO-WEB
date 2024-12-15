@@ -122,17 +122,6 @@ class Device(models.Model):
     def __str__(self):
         return self.Name
     
-#checked out
-class Vacinne_and_measure(models.Model):
-    VID= models.AutoField(primary_key=True)
-    Vacinne_name= models.CharField(max_length=100)
-    Age= models.PositiveIntegerField()
-    Dose=models.CharField(max_length=20)
-    Details= models.TextField()
-    Recordeddate=models.DateTimeField(default=now)
-    def __str(self):
-        return self.Vacinne_name
-
  #checked out
 class Baby(models.Model):
     BID= models.PositiveBigIntegerField(primary_key=True)
@@ -171,6 +160,19 @@ class Feedback(models.Model):
         return self.Subject
     class Meta:
         verbose_name_plural='Feedbacks'
+
+#checked out
+class Vacinne_and_measure(models.Model):
+    VID= models.AutoField(primary_key=True)
+    Vacinne_name= models.CharField(max_length=100)
+    Age= models.PositiveIntegerField()
+    Dose=models.CharField(max_length=20)
+    Details= models.TextField()
+    Recordeddate=models.DateTimeField(default=now)
+    def __str(self):
+        return self.Vacinne_name
+
+
 #checked out
 class Update(models.Model):
     BID=models.ForeignKey('Baby', on_delete=models.CASCADE, related_name='Update')
