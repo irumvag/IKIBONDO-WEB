@@ -79,6 +79,38 @@ Feedback | Ikibondo
         </form>
        </div>
 {%endblock%}
-{%block content%}
-
-{%endblock%}
+{% block content %}
+  <!-- <h1>Reply to Feedback</h1>
+  <p><strong>From:</strong> {{ feedback.FUll_Name }} ({{ feedback.Email }})</p>
+  <p><strong>Subject:</strong> {{ feedback.Subject }}</p>
+  <p><strong>Message:</strong></p>
+  <blockquote style="border-left: 4px solid #ccc; padding-left: 10px; color: #555;">
+    {{ feedback.Message }}
+  </blockquote>
+  <hr>
+  <form method="post" style="max-width: 600px;">
+    {% csrf_token %}
+    <label for="email_subject" style="font-weight: bold;">Reply Subject:</label>
+    <input 
+      type="text" 
+      id="email_subject" 
+      name="email_subject" 
+      value="Re: {{ feedback.Subject }}" 
+      required 
+      style="width: 100%; padding: 10px; margin-bottom: 15px;"
+    >
+    
+    <label for="email_message" style="font-weight: bold;">Reply Message (HTML):</label>
+    <textarea 
+      id="email_message" 
+      name="email_message" 
+      rows="8" 
+      required 
+      style="width: 100%; padding: 10px; margin-bottom: 15px;"
+    ></textarea>
+    
+    <button type="submit" class="button" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
+      Send Reply
+    </button>
+  </form> -->
+{% endblock %}

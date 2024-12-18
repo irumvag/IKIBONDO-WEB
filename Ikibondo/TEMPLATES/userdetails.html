@@ -158,6 +158,7 @@ Ikibondo-User-Details
 <div class="wrapper">
   <div class="box1">
     <form action="" method="post" style="max-width: 400px; margin: auto;">
+      {% csrf_token %}
       <label for="nid" style="display: block; margin-bottom: 10px;">
         <b>National ID:</b>
         <input type="number" name="nid" id="nid" value="" style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc;">

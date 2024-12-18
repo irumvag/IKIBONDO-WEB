@@ -12,6 +12,8 @@ from time import sleep
 from django.core.mail import send_mail
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
+from datetime import datetime
+
 
 
 def returnsum(modelname):
@@ -72,6 +74,7 @@ def login_view(request):
             if user.need_password_change:
                 # Redirect to a password change page
                 return redirect('change_password') 
+            
             return redirect('useradmin')
         else:
             return render(request,'login.html',{'name':{'info':"Invalid phone number or password"}})
@@ -90,8 +93,10 @@ def change_password(request):
             #console.log('the data in the database is :...........' , )
             request.user.save()
             messages.success(request, 'Your password has been changed successfully.')
-            sleep(10)
-            return redirect('useradmin')  # Redirect to home or desired page
+            #sleep(2)
+        
+            return redirect('useradmin')
+            #return redirect('useradmin')  # Redirect to home or desired page
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'change_password.html', {'form': form})
@@ -119,12 +124,34 @@ total={
 @login_required(login_url='/login/')
 def useradmin(request):
     user=request.user
-    myusers=Myuser.objects.filter(role='Chw').order_by('-date_joined')
-    device=Device.objects.all()
-    return render(request,'admindashboard.html',{'user':user,'totals':total,'userchws':myusers,'devices':device})
+    if user.role =='Parent':
+        return render(request,'parentprofile.html',{'user':request.user})
+    else:
+        myusers=Myuser.objects.filter(role='Chw').order_by('-date_joined')
+        device=Device.objects.all()
+        return render(request,'admindashboard.html',{'user':user,'totals':total,'userchws':myusers,'devices':device})
 @login_required(login_url='/login/')
 def adminfeedback(request):
     user=request.user
+    # if request.method == 'POST':
+    #     email_subject = request.POST.get('email_subject')
+    #     email_message = request.POST.get('email_message')
+    #     feedback_ids = request.POST.getlist('ids')
+
+    #     feedback_list = get_list_or_404(Feedback, id__in=feedback_ids)
+    #     recipients = [feedback.Email for feedback in feedback_list]
+
+    #     # Send email
+    #     send_mail(
+    #         subject=email_subject,
+    #         message='',  # Plain text version can be empty if using HTML message
+    #         from_email='admin@example.com',  # Replace with your email
+    #         recipient_list=recipients,
+    #         html_message=email_message  # HTML content
+    #     )
+
+    #     messages.success(request, "Emails sent successfully!")
+    #     return redirect('feedback')
     return render(request,'adminfeedback.html',{'user':user,'totals':total})
 @login_required(login_url='/login/')
 def chw(request):
@@ -133,6 +160,13 @@ def chw(request):
     return render(request,'chw.html',{'user':user,'userss':myuser,'totals':total})
 @login_required
 def userprofile_view(request):
+    if request.method == 'POST':
+        user = request.user
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
+        user.save()
+        return redirect('user_profile') 
     return render(request,'userprofile.html')
 @login_required
 def setting_view(request):
@@ -209,7 +243,6 @@ def babies(request,phone):
     baby=Baby.objects.filter(PID=parentprofile)
     #medical_info = Medical_info.objects.filter(BID__in=babies)
     # Create a dictionary pairing each baby with its medical info
-
     baby_with_medical_info = []
     for b in baby:
         infomedical = Medical_info.objects.filter(BID=b)
@@ -217,15 +250,25 @@ def babies(request,phone):
             'baby': b,
             'medical_info': infomedical
         })
+    context={
+        'now':now,
+        'parent': parent,
+        'parentprofile': parentprofile,
+        'babywithmedicalinfo':baby_with_medical_info,
+    }
 
     if request.method == 'POST':
         if request.POST.get('form1')=='form1':
-            bid = request.POST['BID']
+            bid = int(request.POST['BID'])
             par = request.POST['parent']
             names = request.POST['Names']
             gender = request.POST['Gender']
             photo = request.FILES['Photo']  # Handle file upload
             dob = request.POST['DOB']
+            dob = datetime.fromisoformat(dob)
+            n = datetime.now()
+            # Calculate the age
+            age = n.year - dob.year - ((n.month, n.day) < (dob.month, dob.day))
             born_height = request.POST['Born_height']
             born_weight = request.POST['Born_weight']
             method_used_in_birth = request.POST['Method_Used_in_Birth']
@@ -240,33 +283,39 @@ def babies(request,phone):
             )
             b.save()
             m=Medical_info(
-                HID=True,
+                HID=Hospital.objects.get(LocationId=1),
                 BID=b,
-                Age=now-dob,
+                Age=age,
                 Born_height=born_height,
+                Born_weight=born_weight,
                 Method_Used_in_Birth=method_used_in_birth,
                 Midwife_name=midwife_name
             )
             m.save()
             info="Baby added sucessful"
-            return render(request,'babies.html',{'info':info})
-    context={
-        'now':now,
-        'parent': parent,
-        'parentprofile': parentprofile,
-        'babywithmedicalinfo':baby_with_medical_info,
-    }
-
+            context['info']="Baby added sucessful"
+            return render(request,'babies.html', context)
     return render(request,'babies.html',context) 
 @login_required
 def addchw(request):
     if request.method == 'POST':
         form1 = CustomUserCreationForm(request.POST)
+        p=request.POST['password1']
         if form1.is_valid():
             user = form1.save(commit=False)
-            user.is_active = False
+            if user.role=='Superuser' or user.role=='Nurse':
+                pass
+            else:
+                user.is_active = False
             user.save()
             # Notify hospital admin
+            send_mail(
+                        f'Your account as {user.role} has been Created',
+                        f'Hello {user.first_name} {user.last_name},\nWe are pressure to inform you that your account has been created.\n\nAnd you are waiting for approval to login into you account!\n Login phone number: {user.phone_number}\n Password:{p} \nPlease before login wait for the approval email confirmation.\n\nBest regards,\nIKIBONDO WEB',
+                        'djanaclet@gmail.com',  # Sender email
+                        [user.email],  # Hospital admin email
+                        fail_silently=False,
+                    )
             for users in Myuser.objects.filter(role='Superadmin'):
                 Notification.objects.create(
                     user=users,
@@ -427,4 +476,6 @@ def create_chw(request, phone, role):
             }
         }
         return render(request, 'approve_chw.html', context)
+def parent_view(request):
+    return render(request,'parentprofile.html',{'user':request.user})
 

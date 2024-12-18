@@ -100,7 +100,7 @@
 <div class="wrapper">
   <div class="box1">
     {% if info%}
-     <div class="alter">{{info}}</div>
+     <div class="alert alert-info">{{info}}</div>
       {%endif%}
     <div class="hstack">
       <!-- Button trigger modal -->
@@ -225,10 +225,9 @@
                    <!-- Date of Birth -->
                     <label for="dob" style="font-weight: bold; display: block; margin-bottom: 5px;">Date of Birth:</label>
                     <input 
-                      type="datetime" 
+                      type="datetime-local" 
                       id="dob" 
                       name="DOB" 
-                      value="{{now}}"
                       required 
                       style="
                         width: 100%; 
@@ -309,12 +308,137 @@
                     <button type="submit" value="form1" name="form1" class="btn btn-primary">Add Baby+</button>
                   </div>
                 </form>
+                <script>
+                  document.addEventListener("DOMContentLoaded", function () {
+                    const form = document.querySelector("form");
+                
+                    form.addEventListener("submit", function (e) {
+                      let isValid = true;
+                      let errorMessage = "";
+                
+                      // Get all form values
+                      const bid = document.getElementById("bid").value.trim();
+                      const names = document.getElementById("names").value.trim();
+                      const gender = document.getElementById("gender").value;
+                      const photo = document.getElementById("photo").files[0];
+                      const dob = document.getElementById("dob").value;
+                      const bornHeight = document.getElementById("born_height").value.trim();
+                      const bornWeight = document.getElementById("born_weight").value.trim();
+                      const methodUsed = document.getElementById("method_used").value.trim();
+                      const midwifeName = document.getElementById("midwife_name").value.trim();
+                
+                      // Validate Baby ID (must be a positive number)
+                      if (!bid || isNaN(bid) || bid <= 0) {
+                        isValid = false;
+                        errorMessage += "Baby ID must be a positive number.\n";
+                      }
+                
+                      // Validate Names
+                      if (!names) {
+                        isValid = false;
+                        errorMessage += "Baby Names field cannot be empty.\n";
+                      }
+                
+                      // Validate Gender
+                      if (!gender) {
+                        isValid = false;
+                        errorMessage += "Gender must be selected.\n";
+                      }
+                
+                      // Validate Photo
+                      if (!photo) {
+                        isValid = false;
+                        errorMessage += "Photo is required.\n";
+                      }
+                
+                      // Validate Date of Birth
+                      if (!dob || new Date(dob) > new Date()) {
+                        isValid = false;
+                        errorMessage += "Date of Birth must be a valid date in the past.\n";
+                      }
+                
+                      // Validate Born Height (must be a positive number)
+                      if (!bornHeight || isNaN(bornHeight) || bornHeight <= 0) {
+                        isValid = false;
+                        errorMessage += "Born Height must be a positive number.\n";
+                      }
+                
+                      // Validate Born Weight (must be a positive number)
+                      if (!bornWeight || isNaN(bornWeight) || bornWeight <= 0) {
+                        isValid = false;
+                        errorMessage += "Born Weight must be a positive number.\n";
+                      }
+                
+                      // Validate Method Used in Birth
+                      if (!methodUsed) {
+                        isValid = false;
+                        errorMessage += "Method Used in Birth cannot be empty.\n";
+                      }
+                
+                      // Validate Midwife Name
+                      if (!midwifeName) {
+                        isValid = false;
+                        errorMessage += "Midwife Name cannot be empty.\n";
+                      }
+                
+                      // If not valid, prevent form submission and show an alert
+                      if (!isValid) {
+                        e.preventDefault();
+                        alert(errorMessage);
+                      }
+                    });
+                  });
+                </script>
+                
               </div>
             </div>
           </div>
         </div>
-    </div>
-    
+        <form class="form-control ms-auto p-0 w-50">
+          <div class="input-group">
+            <span class="input-group-text" id="basic-addon1"><button type="button" class="border-0 bg-light">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+              </svg>
+              </button>
+            </span>
+            <input type="text" class="form-control rounded border-0" placeholder=" Search" aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+        </form>
+      </div>
+    <hr>
+    <div class="container-fluid container100">
+      <!-- Parent Information -->
+      <div class="section" id="parent-info">
+          <h3>Parents Information</h3>
+          <div class="info-line"><span>Mother Names:</span> {{ parentprofile.Mother_Names }}</div>
+          <div class="info-line"><span>Father Names:</span> {{ parentprofile.Father_Names }}</div>
+          <div class="info-line"><span>Age:</span> {{ parent.Age }}</div>
+          <div class="info-line"><span>Phone:</span> {{ parent.phone_number }}</div>
+          <div class="info-line"><span>Village:</span> {{ parentprofile.Village }}</div>
+          <div class="action-buttons">
+              <button>✏️ Edit</button>
+              <button>🗑️ Delete</button>
+          </div>
+      </div>
+
+      <!-- Baby Information -->
+      <div class="section" id="baby-info">
+          {% for babyinfo in babywithmedicalinfo %}
+              <h3>Baby Information</h3>
+              <div class="info-line"><span>Baby Name:</span> {{ babyinfo.baby.Names }}</div>
+              <div class="info-line"><span>Gender:</span> {{ babyinfo.baby.Gender }}</div>
+              <div class="info-line"><span>Born Weight:</span> {{ babyinfo.medical_info.first.Born_weight }}gram</div>
+              <div class="info-line"><span>Born Height:</span> {{ babyinfo.medical_info.first.Born_height }}cm</div>
+              <div class="info-line"><span>Date of Birth:</span> {{ babyinfo.baby.DOB|date:"d/m/Y" }}</div>
+              <div class="info-line"><span>Hospital Name:</span> {{ babyinfo.medical_info.first.Hospital_name }}</div>
+              <div class="info-line"><span>Location:</span> {{ babyinfo.medical_info.first.Location }}</div>
+              <div class="info-line"><span>Midwife Name:</span> {{ babyinfo.medical_info.first.Midwife_name }}</div>
+              <div class="info-line"><span>Method Used in Birth:</span> {{ babyinfo.medical_info.first.Method_Used_in_Birth }}</div>
+              <div class="photo-placeholder">Photo </div><img src="{{babyinfo.Photo.url}}" alt="">
+          {% endfor %}
+      </div>
+  </div>
   </div>
 </div>
 

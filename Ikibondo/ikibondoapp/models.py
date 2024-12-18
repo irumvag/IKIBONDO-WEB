@@ -88,7 +88,7 @@ class Parent(models.Model):
             )
     Location=models.ForeignKey(Location,blank=False,on_delete=models.CASCADE,related_name='location')
     def __str__(self):
-        return self.Fullnames
+        return self.User.last_name
     class Meta:
         verbose_name_plural='Parents'
 
@@ -124,11 +124,11 @@ class Device(models.Model):
     
  #checked out
 class Baby(models.Model):
-    BID= models.PositiveBigIntegerField(primary_key=True)
-    PID= models.ManyToManyField(Parent,related_name='Baby')
+    BID= models.PositiveIntegerField(primary_key=True)
+    PID= models.ForeignKey(Parent,related_name='Baby',on_delete=models.CASCADE)
     Names= models.CharField(max_length=100)
     Gender= models.CharField(max_length=30,choices=[('Male','Male'),('Female','Female')])
-    DOB= models.DateField()
+    DOB= models.DateTimeField()
     Photo= models.ImageField(default='default.png',blank=True)
     def __str__(self):
         return self.Names
@@ -137,7 +137,7 @@ class Baby(models.Model):
 
 #checked out
 class Medical_info(models.Model):
-    HID= models.ManyToManyField(Hospital,related_name='bornhospital')
+    HID= models.ForeignKey(Hospital,related_name='bornhospital',on_delete=models.CASCADE)
     BID= models.OneToOneField(Baby,on_delete=models.CASCADE,related_name='Baby')
     Age= models.PositiveIntegerField(help_text="age in mouths")
     Born_height= models.PositiveBigIntegerField()
