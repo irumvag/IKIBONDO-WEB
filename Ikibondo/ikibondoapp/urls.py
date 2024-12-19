@@ -1,11 +1,16 @@
-from django.urls import path
+from django.urls import path,include
 from .views import *
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
 from django.conf import settings
+from rest_framework.routers import DefaultRouter
+
+router=DefaultRouter()
+router.register('notify',NotViewSet)
 
 urlpatterns=[
+    path('api/',include(router.urls)),
     path('',index,name=''),
     path('about/',about,name='about'),
     path('contactus/',contactus,name='contactus'),

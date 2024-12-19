@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-2b-%x20rf6oyb8_+wcij*k=)_fyh=sc&xh3g-$1*#d@ma$^!2y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'ikibondo.gov.rw']
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'ikibondoapp',
+    'rest_framework',
 ]
 AUTH_USER_MODEL='ikibondoapp.Myuser'
 
@@ -144,3 +145,7 @@ EMAIL_PORT = 587  # Port for TLS
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')  # Your Gmail address
 EMAIL_HOST_PASSWORD =config('EMAIL_HOST_PASSWORD')  # Your Gmail app password
+REST_FRAMEWORK = {
+       'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+       'PAGE_SIZE': 10
+   }

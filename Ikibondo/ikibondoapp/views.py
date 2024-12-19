@@ -13,8 +13,8 @@ from django.core.mail import send_mail
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from datetime import datetime
-
-
+from rest_framework import viewsets
+from .serializer import *
 
 def returnsum(modelname):
     s=0
@@ -478,4 +478,9 @@ def create_chw(request, phone, role):
         return render(request, 'approve_chw.html', context)
 def parent_view(request):
     return render(request,'parentprofile.html',{'user':request.user})
+
+class NotViewSet(viewsets.ModelViewSet):
+    queryset=Notification.objects.all()
+    serializer_class=Notificationserializer
+    
 
