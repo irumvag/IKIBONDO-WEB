@@ -42,6 +42,7 @@ urlpatterns=[
     path('approve/<str:phone>/<str:role>/',create_chw,name='approve'),
     path('add_vaccine/',add_vaccine,name='add_vaccine'),
     path('userparent/',parent_view,name='userparent'),
+    path('addvaccine/',addvaccine_view,name='addvaccine'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

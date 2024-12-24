@@ -82,19 +82,19 @@
 <div class="wrapper">
   <div class="box1">
     <h3>Total number of Baby</h3>
-    <p></p>
+    <p style="font-size: 40px;">{{tbaby}}</p>
   </div>
   <div class="box1">
     <h3>Mother is alive</h3>
-    <p></p>
+    <p style="font-size: 40px;">yes</p>
   </div>
   <div class="box1">
     <h3>Father is alive</h3>
-    <p></p>
+    <p style="font-size: 40px;">yes</p>
   </div>
   <div class="box1">
     <h3>Total vaccine taken</h3>
-    <p></p>
+    <p style="font-size: 40px;">0</p>
   </div>
 </div>
 <div class="wrapper">
@@ -409,10 +409,11 @@
     <hr>
     <div class="container-fluid container100">
       <!-- Parent Information -->
+      {% for babyinfo in babywithmedicalinfo %}
       <div class="section" id="parent-info">
           <h3>Parents Information</h3>
-          <div class="info-line"><span>Mother Names:</span> {{ parentprofile.Mother_Names }}</div>
-          <div class="info-line"><span>Father Names:</span> {{ parentprofile.Father_Names }}</div>
+          <div class="info-line"><span>Mother Names:</span> {{ babyinfo.first_name }}</div>
+          <div class="info-line"><span>Father Names:</span> {{ babyinfo.last_name }}</div>
           <div class="info-line"><span>Age:</span> {{ parent.Age }}</div>
           <div class="info-line"><span>Phone:</span> {{ parent.phone_number }}</div>
           <div class="info-line"><span>Village:</span> {{ parentprofile.Village }}</div>
@@ -424,7 +425,7 @@
 
       <!-- Baby Information -->
       <div class="section" id="baby-info">
-          {% for babyinfo in babywithmedicalinfo %}
+          
               <h3>Baby Information</h3>
               <div class="info-line"><span>Baby Name:</span> {{ babyinfo.baby.Names }}</div>
               <div class="info-line"><span>Gender:</span> {{ babyinfo.baby.Gender }}</div>
@@ -436,9 +437,10 @@
               <div class="info-line"><span>Midwife Name:</span> {{ babyinfo.medical_info.first.Midwife_name }}</div>
               <div class="info-line"><span>Method Used in Birth:</span> {{ babyinfo.medical_info.first.Method_Used_in_Birth }}</div>
               <div class="photo-placeholder">Photo </div><img src="{{babyinfo.Photo.url}}" alt="">
-          {% endfor %}
+         
       </div>
   </div>
+  {% endfor %}
   </div>
 </div>
 

@@ -250,11 +250,13 @@ def babies(request,phone):
             'baby': b,
             'medical_info': infomedical
         })
+    
     context={
         'now':now,
         'parent': parent,
         'parentprofile': parentprofile,
         'babywithmedicalinfo':baby_with_medical_info,
+        'tbaby':returnsum(Baby),
     }
 
     if request.method == 'POST':
@@ -478,9 +480,10 @@ def create_chw(request, phone, role):
         return render(request, 'approve_chw.html', context)
 def parent_view(request):
     return render(request,'parentprofile.html',{'user':request.user})
-
 class NotViewSet(viewsets.ModelViewSet):
     queryset=Notification.objects.all()
     serializer_class=Notificationserializer
-    
-
+@login_required
+def addvaccine_view(request):
+    vaccine=Vacinne_and_measure.objects.all()
+    return render(request,'addvaccine.html',{'user':request.user,'vaccines':vaccine})   
